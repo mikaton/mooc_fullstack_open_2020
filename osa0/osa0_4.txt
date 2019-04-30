@@ -1,0 +1,19 @@
+title Uusi muistiinpano
+selain->palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note
+note over selain:
+    Selain lähettää POST pyynnön palvelimelle, 
+    jonka mukana on formin sisältämä data
+    pyynnön bodyssa.
+end note
+palvelin->selain: HTTP 302 Redirect /notes
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
+note over palvelin:
+    Palvelin kehottaa selainta tekemään uuden GET pyynnön
+    osoitteeseen /notes, jolloin sivu uudelleenladataan
+    ja selaimelle lähetetään tyylitiedosto, skriptitiedosto 
+    ja muistiinpanot data.json objektissa
+end note    
+palvelin->selain: notes.html
+palvelin->selain: main.css
+palvelin->selain: main.js
+palvelin->selain: data.json
