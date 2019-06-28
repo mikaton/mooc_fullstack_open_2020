@@ -2,7 +2,7 @@ import React from 'react';
 
 const Part = (props) => (
     <div>
-        <p>{props.part} {props.exercises}</p>
+        <p>{props.name} {props.exercises}</p>
     </div>
 );
 
