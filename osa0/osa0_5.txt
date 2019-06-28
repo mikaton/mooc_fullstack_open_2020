@@ -1,0 +1,15 @@
+title Single Page App
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa
+note over selain:
+    Selain lähettää palvelimelle GET pyynnön
+end note
+palvelin->selain: HTTP 200, spa html
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa.js
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+palvelin->selain: HTTP 200 main.css, spa.js, data.json
+note over palvelin:
+    Palvelin lähettää ensin spa:n html dokumentin, joka puolestaan lataa
+    sivun tyylitiedoston (main.css) ja lähdekoodin(spa.js) sekä muistiinpanot
+    sisältävän objektin (data.json).
+end note

@@ -1,0 +1,11 @@
+title Uusi muistiinpano (SPA)
+selain->palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note over selain:
+    Selain lähettää form-datan JSON-objektina palvelimelle
+end note
+palvelin->selain: HTTP 201 Created
+note over palvelin:
+    Palvelin vastaa 201 created, joka merkitsee uuden resurssin,
+    tässä tapauksessa muistiinpanon, luonnin onnistuneen.
+    Muita HTTP-pyyntöjä ei enää tehdä, ja sovellus pysyy "etusivulla".
+end note
