@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 
 function Button({ handleClick, name }) {
   return (
     <div>
       <button onClick={handleClick}>{name}</button>
     </div>
-  )
+  );
 }
 
 function Statistic({ name, value }) {
@@ -18,8 +18,8 @@ function Statistic({ name, value }) {
 }
 
 function Statistics(props) {
-  if(props.all === 0) {
-    return(
+  if (props.all === 0) {
+    return (
       <div>
         <p>No feedback given</p>
       </div>
@@ -38,7 +38,6 @@ function Statistics(props) {
           <Statistic name="positive" value={props.positive + " %"} />
         </tbody>
       </table>
-
     </div>
   );
 }
@@ -54,31 +53,30 @@ function App() {
   const handleGood = () => {
     setGood(good + 1);
     setAll(all + 1);
-  }
+  };
 
   const handleNeutral = () => {
     setNeutral(neutral + 1);
     setAll(all + 1);
-  }
+  };
 
   const handleBad = () => {
     setBad(bad + 1);
     setAll(all + 1);
-  }
+  };
 
   useEffect(() => {
     setAverage(good - bad / 3);
-    setPositive(good * 100 / all);
+    setPositive((good * 100) / all);
   }, [good, bad, all]);
 
-  
   return (
     <div>
       <h2>give feedback</h2>
       <Button handleClick={handleGood} name="good" />
       <Button handleClick={handleNeutral} name="neutral" />
       <Button handleClick={handleBad} name="bad" />
-      <Statistics 
+      <Statistics
         good={good}
         neutral={neutral}
         bad={bad}
@@ -87,8 +85,7 @@ function App() {
         positive={positive}
       />
     </div>
-  )
-
+  );
 }
 
 export default App;
