@@ -10,10 +10,11 @@ function Button({ handleClick, name }) {
 
 function Statistic({ name, value }) {
   return (
-    <div>
-      <p>{name} {value}</p>
-    </div>
-  )
+    <tr>
+      <td>{name}</td>
+      <td>{value}</td>
+    </tr>
+  );
 }
 
 function Statistics(props) {
@@ -27,12 +28,17 @@ function Statistics(props) {
   return (
     <div>
       <h2>statistics</h2>
-      <Statistic name="good" value={props.good} />
-      <Statistic name="neutral" value={props.neutral} />
-      <Statistic name="bad" value={props.bad} />
-      <Statistic name="all" value={props.all} />
-      <Statistic name="average" value={props.average} />
-      <Statistic name="positive" value={props.positive + " %"} />
+      <table>
+        <tbody>
+          <Statistic name="good" value={props.good} />
+          <Statistic name="neutral" value={props.neutral} />
+          <Statistic name="bad" value={props.bad} />
+          <Statistic name="all" value={props.all} />
+          <Statistic name="average" value={props.average} />
+          <Statistic name="positive" value={props.positive + " %"} />
+        </tbody>
+      </table>
+
     </div>
   );
 }
@@ -63,7 +69,7 @@ function App() {
   useEffect(() => {
     setAverage(good - bad / 3);
     setPositive(good * 100 / all);
-  });
+  }, [good, bad, all]);
 
   
   return (
