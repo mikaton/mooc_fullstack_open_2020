@@ -1,10 +1,21 @@
 import React, {useState, useEffect} from 'react';
 
-function Statistics({ average, positive }) {
+function Statistics(props) {
+  if(props.all === 0) {
+    return(
+      <div>
+        <p>No feedback given</p>
+      </div>
+    );
+  }
   return (
     <div>
-      <p>average {average}</p>
-      <p>positive {positive} %</p>
+      <h2>statistics</h2>
+      <p>good {props.good}</p>
+      <p>neutral {props.neutral}</p>
+      <p>bad {props.bad}</p>
+      <p>average {props.average}</p>
+      <p>positive {props.positive} %</p>
     </div>
   );
 }
@@ -37,19 +48,21 @@ function App() {
     setPositive(good * 100 / all);
   });
 
-
+  
   return (
     <div>
       <h2>give feedback</h2>
       <button onClick={handleGood}>good</button>
       <button onClick={handleNeutral}>neutral</button>
       <button onClick={handleBad}>bad</button>
-      <h2>statistics</h2>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {all}</p>
-      <Statistics average={average} positive={positive} />
+      <Statistics 
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        all={all}
+        average={average}
+        positive={positive}
+      />
     </div>
   )
 
