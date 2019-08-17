@@ -1,5 +1,21 @@
 import React, {useState, useEffect} from 'react';
 
+function Button({ handleClick, name }) {
+  return (
+    <div>
+      <button onClick={handleClick}>{name}</button>
+    </div>
+  )
+}
+
+function Statistic({ name, value }) {
+  return (
+    <div>
+      <p>{name} {value}</p>
+    </div>
+  )
+}
+
 function Statistics(props) {
   if(props.all === 0) {
     return(
@@ -11,11 +27,12 @@ function Statistics(props) {
   return (
     <div>
       <h2>statistics</h2>
-      <p>good {props.good}</p>
-      <p>neutral {props.neutral}</p>
-      <p>bad {props.bad}</p>
-      <p>average {props.average}</p>
-      <p>positive {props.positive} %</p>
+      <Statistic name="good" value={props.good} />
+      <Statistic name="neutral" value={props.neutral} />
+      <Statistic name="bad" value={props.bad} />
+      <Statistic name="all" value={props.all} />
+      <Statistic name="average" value={props.average} />
+      <Statistic name="positive" value={props.positive + " %"} />
     </div>
   );
 }
@@ -52,9 +69,9 @@ function App() {
   return (
     <div>
       <h2>give feedback</h2>
-      <button onClick={handleGood}>good</button>
-      <button onClick={handleNeutral}>neutral</button>
-      <button onClick={handleBad}>bad</button>
+      <Button handleClick={handleGood} name="good" />
+      <Button handleClick={handleNeutral} name="neutral" />
+      <Button handleClick={handleBad} name="bad" />
       <Statistics 
         good={good}
         neutral={neutral}
