@@ -3,7 +3,7 @@ import React from 'react';
 const Total = ({ parts }) => {
     
     const total = parts
-        .map(osa => osa = osa.exercises)
+        .map(part => part = part.exercises)
         .reduce((summa, exercises) => summa += exercises, 0);
 
     return (
