@@ -1,13 +1,13 @@
 import React from 'react';
 
-const Total = (props) => {
-    let total = 0;
-    for(let i = 0; i < props.parts.length; i++) {
-        total += props.parts[i].exercises;
-    }
+const Total = ({ parts }) => {
     
+    const total = parts
+        .map(osa => osa = osa.exercises)
+        .reduce((summa, exercises) => summa += exercises, 0);
+
     return (
-        <p>Number of exercises {total}</p>
+        <strong>Total of {total} excercises</strong>
     );
 }
 
