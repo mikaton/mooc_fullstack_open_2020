@@ -3,20 +3,20 @@ import FilterForm from "./FilterForm";
 import AddPersonForm from "./AddPersonForm";
 import PersonsList from "./PersonsList";
 
+import axios from "axios";
+
 function App() {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "045-1234567" },
-    { name: "Testi Testinen", number: "040-1210567" },
-    { name: "Marko Virtanen", number: "046-321327" },
-    { name: "Joulu Pukki", number: "041-1754322" },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [filteredPersons, setFilteredPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
   useEffect(() => {
-    setFilteredPersons(persons);
-  }, [persons]);
+    axios.get("http://localhost:3001/persons").then(res => {
+      setPersons(res.data);
+      setFilteredPersons(res.data);
+    });
+  }, []);
 
   const handleAddNewPerson = event => {
     event.preventDefault();
