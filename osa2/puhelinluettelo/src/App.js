@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import FilterForm from "./FilterForm";
+import AddPersonForm from "./AddPersonForm";
+import PersonsList from "./PersonsList";
 
 function App() {
   const [persons, setPersons] = useState([
@@ -60,25 +63,17 @@ function App() {
   return (
     <div className="App">
       <h2>Phonebook</h2>
-      filter shown with
-      <input onChange={handleFiltering} />
-      <form onSubmit={handleAddNewPerson}>
-        <div>
-          name: <input value={newName} onChange={handleInputNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleInputNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <FilterForm handleFiltering={handleFiltering} />
+      <h2>Add a new person</h2>
+      <AddPersonForm
+        newName={newName}
+        newNumber={newNumber}
+        handleInputNameChange={handleInputNameChange}
+        handleInputNumberChange={handleInputNumberChange}
+        handleAddNewPerson={handleAddNewPerson}
+      />
       <h2>Numbers</h2>
-      {filteredPersons.map(person => (
-        <p key={person.name}>
-          {person.name} {person.number}
-        </p>
-      ))}
+      <PersonsList persons={filteredPersons} />
     </div>
   );
 }
