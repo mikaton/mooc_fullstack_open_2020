@@ -28,16 +28,29 @@ function App() {
 
   const handleAddNewPerson = event => {
     event.preventDefault();
-    const newPerson = { name: newName, number: newNumber };
-    if (
-      persons.find(
-        person => person.name.toLowerCase() === newName.toLowerCase()
-      )
-    ) {
-      alert(`${newName} is already in the phonebook.`);
+
+    let personToFind = persons.find(person => person.name === newName);
+
+    if (personToFind) {
+      if (
+        window.confirm(
+          `${newName} on jo luettelossa, korvataanko vanha numero?`
+        )
+      ) {
+        const person = { name: personToFind.name, number: newNumber };
+        personService.update(personToFind.id, person).then(() => {
+          personService.getAll().then(persons => {
+            setPersons(persons);
+            setFilteredPersons(persons);
+            setNewName("");
+            setNewNumber("");
+          });
+        });
+      }
     } else {
-      personService.create(newPerson).then(() => {
-        setPersons(persons.concat(newPerson));
+      const person = { name: newName, number: newNumber };
+      personService.create(person).then(() => {
+        setPersons(persons.concat(person));
         setNewName("");
         setNewNumber("");
       });

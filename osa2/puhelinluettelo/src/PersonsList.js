@@ -1,7 +1,6 @@
 import React from "react";
 
 function PersonsList({ persons, deletePerson }) {
-  console.log(persons);
   return (
     <div>
       {persons.map(person => (
