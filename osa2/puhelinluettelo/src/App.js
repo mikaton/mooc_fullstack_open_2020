@@ -44,6 +44,19 @@ function App() {
     }
   };
 
+  const handleDeletePerson = person => {
+    let personToDelete = persons.find(p => p.id === person.id);
+
+    if (window.confirm(`Poistetaanko ${personToDelete.name}?`)) {
+      let newList = [];
+      newList = persons.filter(person => person.id !== personToDelete.id);
+      personService.deleteById(personToDelete.id).then(() => {
+        setPersons(newList);
+        setFilteredPersons(newList);
+      });
+    }
+  };
+
   const handleFiltering = event => {
     let currentList = [],
       newList = [];
@@ -83,7 +96,10 @@ function App() {
         handleAddNewPerson={handleAddNewPerson}
       />
       <h2>Numbers</h2>
-      <PersonsList persons={filteredPersons} />
+      <PersonsList
+        persons={filteredPersons}
+        deletePerson={handleDeletePerson}
+      />
     </div>
   );
 }
