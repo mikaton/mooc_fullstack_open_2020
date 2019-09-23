@@ -3,20 +3,28 @@ import FilterForm from "./FilterForm";
 import AddPersonForm from "./AddPersonForm";
 import PersonsList from "./PersonsList";
 
-import axios from "axios";
+import * as personService from "./PersonService";
 
 function App() {
   const [persons, setPersons] = useState([]);
   const [filteredPersons, setFilteredPersons] = useState([]);
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
 
+  // Listan hakeminen palvelimelta, kun sovellus käynnistetään
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then(res => {
-      setPersons(res.data);
-      setFilteredPersons(res.data);
+    personService.getAll().then(persons => {
+      setPersons(persons);
+      setFilteredPersons(persons);
     });
   }, []);
+
+  // Listan päivitys, kun listaan on lisätty/poistettu henkilö
+  useEffect(() => {
+    setPersons(persons);
+    setFilteredPersons(persons);
+  }, [persons]);
+
+  const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
 
   const handleAddNewPerson = event => {
     event.preventDefault();
@@ -28,9 +36,11 @@ function App() {
     ) {
       alert(`${newName} is already in the phonebook.`);
     } else {
-      setPersons(persons.concat(newPerson));
-      setNewName("");
-      setNewNumber("");
+      personService.create(newPerson).then(() => {
+        setPersons(persons.concat(newPerson));
+        setNewName("");
+        setNewNumber("");
+      });
     }
   };
 
