@@ -2,18 +2,13 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "050-9999666",
+      "number": "040-9865432",
       "id": 1
     },
     {
       "name": "Ada Lovelace",
       "number": "39-44-1234567",
       "id": 2
-    },
-    {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": 3
     }
   ]
 }
