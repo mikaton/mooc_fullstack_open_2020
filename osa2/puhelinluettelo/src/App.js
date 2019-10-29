@@ -55,10 +55,8 @@ function App() {
               setNewNumber("");
             });
           })
-          .catch(() => {
-            setErrorMessage(
-              `${personToFind.name} on jo poistettu palvelimelta.`
-            );
+          .catch(error => {
+            setErrorMessage(error.response.data.error);
             setTimeout(() => {
               setErrorMessage(null);
             }, 5000);
@@ -66,15 +64,23 @@ function App() {
       }
     } else {
       const person = { name: newName, number: newNumber };
-      personService.create(person).then(() => {
-        setSuccessMessage(`Added ${person.name}`);
-        setTimeout(() => {
-          setSuccessMessage(null);
-        }, 3000);
-        setPersons(persons.concat(person));
-        setNewName("");
-        setNewNumber("");
-      });
+      personService
+        .create(person)
+        .then(() => {
+          setSuccessMessage(`Added ${person.name}`);
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 3000);
+          setPersons(persons.concat(person));
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch(error => {
+          setErrorMessage(error.response.data.error);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 3000);
+        });
     }
   };
 
