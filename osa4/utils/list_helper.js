@@ -12,7 +12,20 @@ const totalLikes = blogs => {
   }
 };
 
+const favoriteBlog = blogs => {
+  const favorite = blogs.reduce((previous, current) => {
+    return previous.likes > current.likes ? previous : current;
+  });
+
+  return {
+    title: favorite.title,
+    author: favorite.author,
+    likes: favorite.likes
+  };
+};
+
 module.exports = {
   dummy,
-  totalLikes
+  totalLikes,
+  favoriteBlog
 };
