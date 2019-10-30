@@ -33,7 +33,6 @@ function App() {
     event.preventDefault();
 
     let personToFind = persons.find(person => person.name === newName);
-
     if (personToFind) {
       if (
         window.confirm(
@@ -86,7 +85,6 @@ function App() {
 
   const handleDeletePerson = person => {
     let personToDelete = persons.find(p => p.id === person.id);
-
     if (window.confirm(`Poistetaanko ${personToDelete.name}?`)) {
       let newList = [];
       newList = persons.filter(person => person.id !== personToDelete.id);
