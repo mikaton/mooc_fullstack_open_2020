@@ -24,4 +24,25 @@ blogsRouter.post("/", async (request, response) => {
   response.status(201).json(savedBlog.toJSON());
 });
 
+blogsRouter.delete("/:id", async (request, response) => {
+  const id = request.params.id;
+  try {
+    await Blog.findByIdAndDelete(id);
+    response.status(200).json({ message: "Blog deleted successfully" });
+  } catch {
+    return response.status(404).json({ error: "blog not found" });
+  }
+});
+
+blogsRouter.patch("/:id", async (request, response) => {
+  const body = request.body;
+
+  try {
+    await Blog.findByIdAndUpdate(request.params.id, body);
+    response.status(200).json({ message: "blog updated successfully" });
+  } catch (err) {
+    response.status(404).json({ error: err });
+  }
+});
+
 module.exports = blogsRouter;

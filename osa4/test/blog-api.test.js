@@ -90,6 +90,33 @@ describe("When there is some blogs saved", () => {
       expect(response.body.likes).toEqual(0);
     });
   });
+  describe("Deleting a single blog", () => {
+    test("doesn't work with an invalid id", async () => {
+      await api.delete("/api/blogs/invalidid").expect(404);
+    });
+    test("works with a valid id", async () => {
+      await api.delete("/api/blogs/5a422a851b54a676234d17f7").expect(200);
+    });
+  });
+  describe("Updating a single blog", () => {
+    test("works with valid id and update data", async () => {
+      const updateData = { likes: 1 };
+
+      await api
+        .patch("/api/blogs/5a422aa71b54a676234d17f8")
+        .send(updateData)
+        .expect(200);
+    });
+    test("doesn't work with an invalid id", async () => {
+      const updateData = {
+        likes: 1,
+      };
+      await api
+        .patch("/api/blogs/invalidid")
+        .send(updateData)
+        .expect(404);
+    });
+  });
 });
 
 afterAll(() => {
