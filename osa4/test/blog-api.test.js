@@ -69,6 +69,17 @@ test("posting a new blog works", async () => {
   expect(response.body.length).toBe(initialBlogs.length + 1);
 });
 
+test("Likes should be set to 0 if not set", async () => {
+  const newBlog = {
+    title: "Testiblogi 2",
+    author: "Mika Tonteri",
+    url: "https://www.feikkiblogi.fi/testiblogi2.html",
+  };
+  const response = await api.post("/api/blogs").send(newBlog);
+
+  expect(response.body.likes).toEqual(0);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
