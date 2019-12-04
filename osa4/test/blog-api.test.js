@@ -46,6 +46,12 @@ test("there are 2 blogs", async () => {
   expect(response.body.length).toBe(2);
 });
 
+test("_id field is properly transformed to id", async () => {
+  const response = await api.get("/api/blogs");
+  expect(response.body[0]._id).toBeUndefined();
+  expect(response.body[0].id).toBeDefined();
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
