@@ -52,6 +52,17 @@ test("_id field is properly transformed to id", async () => {
   expect(response.body[0].id).toBeDefined();
 });
 
+test("reject blogs with no title or url", async () => {
+  const newBlog = {
+    author: "Mika Tonteri",
+  };
+
+  const response = await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(400);
+});
+
 test("posting a new blog works", async () => {
   const newBlog = {
     title: "Testiblogi",
