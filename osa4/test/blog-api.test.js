@@ -24,71 +24,72 @@ const initialBlogs = [
   },
 ];
 
-beforeEach(async () => {
-  await Blog.deleteMany({});
+describe("When there is some blogs saved", () => {
+  beforeEach(async () => {
+    await Blog.deleteMany({});
 
-  let blog = new Blog(initialBlogs[0]);
-  await blog.save();
+    let blog = new Blog(initialBlogs[0]);
+    await blog.save();
 
-  blog = new Blog(initialBlogs[1]);
-  await blog.save();
-});
+    blog = new Blog(initialBlogs[1]);
+    await blog.save();
+  });
 
-test("blogs are returned as json", async () => {
-  await api
-    .get("/api/blogs")
-    .expect(200)
-    .expect("Content-Type", /application\/json/);
-});
+  test("blogs are returned as json", async () => {
+    await api
+      .get("/api/blogs")
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+  });
+  test("all blogs are returned", async () => {
+    const response = await api.get("/api/blogs");
+    expect(response.body.length).toEqual(initialBlogs.length);
+  });
+  describe("Posting a new blog", () => {
+    test("fails with no title or url", async () => {
+      const newBlog = {
+        author: "Mika Tonteri",
+      };
 
-test("there are 2 blogs", async () => {
-  const response = await api.get("/api/blogs");
-  expect(response.body.length).toEqual(initialBlogs.length);
-});
+      await api
+        .post("/api/blogs")
+        .send(newBlog)
+        .expect(400);
+    });
+    test("succeeds with valid data", async () => {
+      const newBlog = {
+        title: "Testiblogi",
+        author: "Mika Tonteri",
+        url: "https://www.feikkiblogi.fi/testiblogi.html",
+        likes: 0,
+      };
+      await api
+        .post("/api/blogs")
+        .send(newBlog)
+        .expect(201)
+        .expect("Content-Type", /application\/json/);
 
-test("_id field is properly transformed to id", async () => {
-  const response = await api.get("/api/blogs");
-  expect(response.body[0]._id).toBeUndefined();
-  expect(response.body[0].id).toBeDefined();
-});
+      const response = await api.get("/api/blogs");
+      expect(response.body.length).toBe(initialBlogs.length + 1);
+    });
+  });
+  describe("Transforming blog data", () => {
+    test("_id field is properly transformed to id", async () => {
+      const response = await api.get("/api/blogs");
+      expect(response.body[0]._id).toBeUndefined();
+      expect(response.body[0].id).toBeDefined();
+    });
+    test("Likes are set to 0 if not set", async () => {
+      const newBlog = {
+        title: "Testiblogi 2",
+        author: "Mika Tonteri",
+        url: "https://www.feikkiblogi.fi/testiblogi2.html",
+      };
+      const response = await api.post("/api/blogs").send(newBlog);
 
-test("reject blogs with no title or url", async () => {
-  const newBlog = {
-    author: "Mika Tonteri",
-  };
-
-  const response = await api
-    .post("/api/blogs")
-    .send(newBlog)
-    .expect(400);
-});
-
-test("posting a new blog works", async () => {
-  const newBlog = {
-    title: "Testiblogi",
-    author: "Mika Tonteri",
-    url: "https://www.feikkiblogi.fi/testiblogi.html",
-    likes: 0,
-  };
-  await api
-    .post("/api/blogs")
-    .send(newBlog)
-    .expect(201)
-    .expect("Content-Type", /application\/json/);
-
-  const response = await api.get("/api/blogs");
-  expect(response.body.length).toBe(initialBlogs.length + 1);
-});
-
-test("Likes should be set to 0 if not set", async () => {
-  const newBlog = {
-    title: "Testiblogi 2",
-    author: "Mika Tonteri",
-    url: "https://www.feikkiblogi.fi/testiblogi2.html",
-  };
-  const response = await api.post("/api/blogs").send(newBlog);
-
-  expect(response.body.likes).toEqual(0);
+      expect(response.body.likes).toEqual(0);
+    });
+  });
 });
 
 afterAll(() => {
