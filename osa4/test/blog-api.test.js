@@ -43,13 +43,30 @@ test("blogs are returned as json", async () => {
 
 test("there are 2 blogs", async () => {
   const response = await api.get("/api/blogs");
-  expect(response.body.length).toBe(2);
+  expect(response.body.length).toEqual(initialBlogs.length);
 });
 
 test("_id field is properly transformed to id", async () => {
   const response = await api.get("/api/blogs");
   expect(response.body[0]._id).toBeUndefined();
   expect(response.body[0].id).toBeDefined();
+});
+
+test("posting a new blog works", async () => {
+  const newBlog = {
+    title: "Testiblogi",
+    author: "Mika Tonteri",
+    url: "https://www.feikkiblogi.fi/testiblogi.html",
+    likes: 0,
+  };
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const response = await api.get("/api/blogs");
+  expect(response.body.length).toBe(initialBlogs.length + 1);
 });
 
 afterAll(() => {
