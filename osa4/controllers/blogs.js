@@ -14,7 +14,7 @@ blogsRouter.post("/", async (request, response, next) => {
   if (!body.title || !body.url) {
     return response.status(400).send({ error: "Title or URL missing" });
   }
-  console.log(request.token);
+
   try {
     const decodedToken = jwt.decode(request.token, process.env.SECRET);
 
@@ -44,10 +44,25 @@ blogsRouter.post("/", async (request, response, next) => {
 blogsRouter.delete("/:id", async (request, response, next) => {
   const id = request.params.id;
   try {
-    await Blog.findByIdAndDelete(id);
+    const decodedToken = jwt.decode(request.token, process.env.SECRET);
+    if (!decodedToken) {
+      return response.status(401).json({ error: "token missing or invalid" });
+    }
+
+    const blog = await Blog.findById(id);
+
+    console.log(blog.id);
+
+    if (blog.user.toString() !== decodedToken.id.toString()) {
+      return response
+        .status(401)
+        .json({ error: "You don't have permission to delete this blog" });
+    }
+
+    await Blog.deleteOne({ _id: id });
     response.status(200).json({ message: "Blog deleted successfully" });
-  } catch {
-    return response.status(404).json({ error: "Blog not found" });
+  } catch (error) {
+    next(error);
   }
 });
 
