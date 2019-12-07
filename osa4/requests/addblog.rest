@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer .eyJ1c2VybmFtZSI6Im10b24iLCJpZCI6IjVkZWI3MjgyZTNhYmUwMzM3MGIxYjhmNiIsImlhdCI6MTU3NTcxOTI3NH0.uBT792M2H4RwGoK1kMS98pt3x_5D1mArsN6Uxpur9G4
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im10b24iLCJpZCI6IjVkZWI3MjgyZTNhYmUwMzM3MGIxYjhmNiIsImlhdCI6MTU3NTcxOTgwMH0.tKqyWjMYiEAARGlBlxiITMzCajADE7ny-vOd-7YSVD4
 
 {
-    "title": "Testiblogi 66",
-    "author": "Jaska Jokunen",
+    "title": "Execute Order 66",
+    "author": "Emperor Palpatine",
     "url": "http://localhost:3003/testi66",
-    "likes": 5
+    "likes": 1000
 }
