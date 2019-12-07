@@ -4,6 +4,7 @@ const supertest = require("supertest");
 const app = require("../app");
 const api = supertest(app);
 const helper = require("./test_helper");
+const bcrypt = require("bcryptjs");
 
 describe("when there is initially one user in the DB", () => {
   beforeEach(async () => {
@@ -11,7 +12,7 @@ describe("when there is initially one user in the DB", () => {
     const user = new User({
       username: "root",
       name: "Superuser",
-      password: "salaisuus",
+      passwordHash: await bcrypt.hash("salaisuus", 10),
     });
     await user.save();
   });
@@ -56,6 +57,43 @@ describe("when there is initially one user in the DB", () => {
     const usersAtEnd = await helper.usersInDb();
     expect(usersAtEnd.length).toBe(usersAtStart.length);
   });
+  test("creation fails with proper status code if password is less than 3 characters long", async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: "testi",
+      name: "Testi Testinen",
+      password: "12",
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain("at least 3 characters");
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd.length).toBe(usersAtStart.length);
+  });
+});
+test("creation fails with proper status code if no password is given", async () => {
+  const usersAtStart = await helper.usersInDb();
+
+  const newUser = {
+    username: "testi",
+    name: "Testi Testinen",
+  };
+
+  const result = await api
+    .post("/api/users")
+    .send(newUser)
+    .expect(400)
+    .expect("Content-Type", /application\/json/);
+
+  expect(result.body.error).toContain("Password is required");
+  const usersAtEnd = await helper.usersInDb();
+  expect(usersAtEnd.length).toBe(usersAtStart.length);
 });
 
 afterAll(async () => {
