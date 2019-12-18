@@ -17,7 +17,17 @@ function App() {
   const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
+    const loggedUser = localStorage.getItem("user");
+    if (loggedUser) {
+      const user = JSON.parse(loggedUser);
+      setUser(user);
+      blogService.setToken(user.token);
+    }
+  }, []);
+
+  useEffect(() => {
     blogService.getAll().then(initialBlogs => {
+      initialBlogs.sort((a, b) => b.likes - a.likes);
       setBlogs(initialBlogs);
     });
   }, []);
@@ -73,7 +83,12 @@ function App() {
             setSuccessMessage={setSuccessMessage}
             setErrorMessage={setErrorMessage}
           />
-          <BlogList user={user} blogs={blogs} handleLogout={handleLogout} />
+          <BlogList
+            user={user}
+            blogs={blogs}
+            setBlogs={setBlogs}
+            handleLogout={handleLogout}
+          />
         </div>
       )}
     </div>

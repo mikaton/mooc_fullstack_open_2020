@@ -68,12 +68,11 @@ blogsRouter.delete("/:id", async (request, response, next) => {
 
 blogsRouter.patch("/:id", async (request, response, next) => {
   const body = request.body;
-
   try {
-    await Blog.findByIdAndUpdate(request.params.id, body);
-    response.status(200).json({ message: "blog updated successfully" });
-  } catch {
-    return response.status(404).json({ error: "Blog not found" });
+    const result = await Blog.findByIdAndUpdate(request.params.id, body);
+    response.status(200).json(result);
+  } catch (error) {
+    return next(error);
   }
 });
 

@@ -22,7 +22,7 @@ function AddBlogForm({
         author,
         url,
       };
-      const result = await blogService.create(user, newBlog);
+      const result = await blogService.create(newBlog);
       setSuccessMessage(`a new blog ${result.title} by ${result.author} added`);
       setTimeout(() => {
         setSuccessMessage(null);
