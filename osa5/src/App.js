@@ -43,26 +43,29 @@ function App() {
     setUser(null);
   };
 
+  const loginForm = () => {
+    return (
+      <div>
+        <Message messageType="success" message={successMessage} />
+        <Message messageType="error" message={errorMessage} />
+        <LoginForm
+          handleLogin={handleLogin}
+          username={username}
+          password={password}
+          setUsername={setUsername}
+          setPassword={setPassword}
+        />
+      </div>
+    );
+  };
+
   return (
     <div className="App">
-      {user === null && (
-        <div>
-          <Message messageType="success" message={successMessage} />
-          <Message messageType="error" message={errorMessage} />
-          <LoginForm
-            handleLogin={handleLogin}
-            username={username}
-            password={password}
-            setUsername={setUsername}
-            setPassword={setPassword}
-          />
-        </div>
-      )}
+      {user === null && loginForm()}
       {user !== null && (
         <div>
           <Message messageType="success" message={successMessage} />
           <Message messageType="error" message={errorMessage} />
-          <BlogList user={user} blogs={blogs} handleLogout={handleLogout} />
           <AddBlogForm
             user={user}
             blogs={blogs}
@@ -70,6 +73,7 @@ function App() {
             setSuccessMessage={setSuccessMessage}
             setErrorMessage={setErrorMessage}
           />
+          <BlogList user={user} blogs={blogs} handleLogout={handleLogout} />
         </div>
       )}
     </div>
