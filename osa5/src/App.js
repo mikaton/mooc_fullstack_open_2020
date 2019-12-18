@@ -6,6 +6,7 @@ import loginService from "./services/login";
 import LoginForm from "./components/LoginForm";
 import BlogList from "./components/BlogList";
 import AddBlogForm from "./components/AddBlogForm";
+import Message from "./components/Message";
 
 function App() {
   const [blogs, setBlogs] = useState([]);
@@ -13,6 +14,7 @@ function App() {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     blogService.getAll().then(initialBlogs => {
@@ -44,18 +46,30 @@ function App() {
   return (
     <div className="App">
       {user === null && (
-        <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          password={password}
-          setUsername={setUsername}
-          setPassword={setPassword}
-        />
+        <div>
+          <Message messageType="success" message={successMessage} />
+          <Message messageType="error" message={errorMessage} />
+          <LoginForm
+            handleLogin={handleLogin}
+            username={username}
+            password={password}
+            setUsername={setUsername}
+            setPassword={setPassword}
+          />
+        </div>
       )}
       {user !== null && (
         <div>
+          <Message messageType="success" message={successMessage} />
+          <Message messageType="error" message={errorMessage} />
           <BlogList user={user} blogs={blogs} handleLogout={handleLogout} />
-          <AddBlogForm blogs={blogs} setBlogs={setBlogs} />
+          <AddBlogForm
+            user={user}
+            blogs={blogs}
+            setBlogs={setBlogs}
+            setSuccessMessage={setSuccessMessage}
+            setErrorMessage={setErrorMessage}
+          />
         </div>
       )}
     </div>

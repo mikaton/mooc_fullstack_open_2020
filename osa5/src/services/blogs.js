@@ -1,16 +1,14 @@
 import axios from "axios";
-
 const baseUrl = "/api/blogs";
-const user = JSON.parse(localStorage.getItem("user"));
-axios.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
 
 const getAll = () => {
   const request = axios.get(baseUrl);
   return request.then(response => response.data);
 };
 
-const create = newBlog => {
-  const request = axios.post(baseUrl, newBlog);
+const create = (user, newBlog) => {
+  const config = { Authorization: `Bearer ${user.token}` };
+  const request = axios.post(baseUrl, newBlog, { headers: config });
   return request.then(response => response.data);
 };
 
