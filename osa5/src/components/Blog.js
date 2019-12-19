@@ -69,7 +69,7 @@ const Blog = ({ user, blog, setBlogs, setErrorMessage, setSuccessMessage }) => {
     <div style={blogStyle}>
       {showBlogDetails && blogDetails()}
       {!showBlogDetails && (
-        <div onClick={() => setShowBlogDetails(true)}>
+        <div className="blog" onClick={() => setShowBlogDetails(true)}>
           {blog.title} {blog.author}
         </div>
       )}
