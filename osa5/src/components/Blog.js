@@ -54,7 +54,7 @@ const Blog = ({ user, blog, setBlogs, setErrorMessage, setSuccessMessage }) => {
     <div>
       <button onClick={() => setShowBlogDetails(false)}>hide details</button>
       <p>{blog.title}</p>
-      <p>{blog.url}</p>
+      <a href={blog.url}>{blog.url}</a>
       <p>
         {blog.likes} likes <button onClick={handleLike}>like</button>
       </p>
