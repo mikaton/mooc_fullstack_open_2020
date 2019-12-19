@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import blogService from "./services/blogs";
-import loginService from "./services/login";
+import blogService from './services/blogs';
+import loginService from './services/login';
 
-import LoginForm from "./components/LoginForm";
-import BlogList from "./components/BlogList";
-import AddBlogForm from "./components/AddBlogForm";
-import Message from "./components/Message";
+import LoginForm from './components/LoginForm';
+import BlogList from './components/BlogList';
+import AddBlogForm from './components/AddBlogForm';
+import Message from './components/Message';
 
 function App() {
   const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
-    const loggedUser = localStorage.getItem("user");
+    const loggedUser = localStorage.getItem('user');
     if (loggedUser) {
       const user = JSON.parse(loggedUser);
       setUser(user);
@@ -36,12 +36,12 @@ function App() {
     event.preventDefault();
     try {
       const user = await loginService.login({ username, password });
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user));
       setUser(user);
-      setUsername("");
-      setPassword("");
+      setUsername('');
+      setPassword('');
     } catch (error) {
-      setErrorMessage("Wrong credentials");
+      setErrorMessage('Wrong credentials');
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
@@ -49,7 +49,7 @@ function App() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem('user');
     setUser(null);
   };
 

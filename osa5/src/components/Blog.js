@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import blogService from "../services/blogs";
+import React, { useState } from 'react';
+import blogService from '../services/blogs';
 
 const Blog = ({ user, blog, setBlogs, setErrorMessage, setSuccessMessage }) => {
   const [showBlogDetails, setShowBlogDetails] = useState(false);
@@ -7,13 +7,13 @@ const Blog = ({ user, blog, setBlogs, setErrorMessage, setSuccessMessage }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
   };
 
   const isUserAddedBlog = user.username === blog.user.username;
-  const showIfUserAddedBlog = { display: isUserAddedBlog ? "" : "none" };
+  const showIfUserAddedBlog = { display: isUserAddedBlog ? '' : 'none' };
 
   const handleLike = async () => {
     const updateData = {

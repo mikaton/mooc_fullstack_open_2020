@@ -1,5 +1,5 @@
-import React from "react";
-import Blog from "./Blog";
+import React from 'react';
+import Blog from './Blog';
 
 function BlogList({
   user,

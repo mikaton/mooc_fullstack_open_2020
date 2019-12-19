@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Message = ({ message, messageType }) => {
   if (message === null) return null;

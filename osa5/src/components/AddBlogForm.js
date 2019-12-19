@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import blogService from "../services/blogs";
+import blogService from '../services/blogs';
 
 function AddBlogForm({ blogs, setBlogs, setSuccessMessage, setErrorMessage }) {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [url, setUrl] = useState('');
   const [blogFormVisible, setBlogFormVisible] = useState(false);
 
   const handleAddBlog = async event => {
@@ -22,9 +22,9 @@ function AddBlogForm({ blogs, setBlogs, setSuccessMessage, setErrorMessage }) {
         setSuccessMessage(null);
       }, 5000);
       setBlogs(blogs.concat(result));
-      setTitle("");
-      setAuthor("");
-      setUrl("");
+      setTitle('');
+      setAuthor('');
+      setUrl('');
     } catch (error) {
       setErrorMessage(error.message);
       setTimeout(() => {
@@ -33,8 +33,8 @@ function AddBlogForm({ blogs, setBlogs, setSuccessMessage, setErrorMessage }) {
     }
   };
 
-  const hideWhenVisible = { display: blogFormVisible ? "none" : "" };
-  const showWhenVisible = { display: blogFormVisible ? "" : "none" };
+  const hideWhenVisible = { display: blogFormVisible ? 'none' : '' };
+  const showWhenVisible = { display: blogFormVisible ? '' : 'none' };
 
   return (
     <div>
