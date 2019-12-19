@@ -88,6 +88,8 @@ function App() {
             blogs={blogs}
             setBlogs={setBlogs}
             handleLogout={handleLogout}
+            setErrorMessage={setErrorMessage}
+            setSuccessMessage={setSuccessMessage}
           />
         </div>
       )}
