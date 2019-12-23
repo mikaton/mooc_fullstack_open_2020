@@ -1,16 +1,17 @@
-import React from 'react'
+import React from 'react';
 
-const Notification = () => {
+const Notification = ({ store }) => {
   const style = {
     border: 'solid',
     padding: 10,
-    borderWidth: 1
-  }
-  return (
-    <div style={style}>
-      render here notification...
-    </div>
-  )
-}
+    borderWidth: 1,
+  };
 
-export default Notification
+  const notification = store.getState().notification;
+
+  if (notification === null) return null;
+
+  return <div style={style}>{notification}</div>;
+};
+
+export default Notification;
