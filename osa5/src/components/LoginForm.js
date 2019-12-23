@@ -1,41 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-function LoginForm({
-  handleLogin,
-  username,
-  password,
-  setUsername,
-  setPassword,
-}) {
-  LoginForm.propTypes = {
-    handleLogin: PropTypes.func.isRequired,
-    setUsername: PropTypes.func.isRequired,
-    setPassword: PropTypes.func.isRequired,
-    username: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
-  };
+function LoginForm({ username, password, handleLogin }) {
   return (
     <form onSubmit={handleLogin}>
       <div>
         username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
+        <input {...username} />
       </div>
       <div>
         password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
+        <input {...password} />
       </div>
-      <button type="submit">login</button>
+      <button type='submit'>login</button>
     </form>
   );
 }

@@ -8,13 +8,16 @@ import BlogList from './components/BlogList';
 import AddBlogForm from './components/AddBlogForm';
 import Message from './components/Message';
 
+import { useField } from './hooks';
+
 function App() {
   const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+
+  const username = useField('text');
+  const password = useField('password');
 
   useEffect(() => {
     const loggedUser = localStorage.getItem('user');
@@ -34,11 +37,13 @@ function App() {
   const handleLogin = async event => {
     event.preventDefault();
     try {
-      const user = await loginService.login({ username, password });
+      const credentials = {
+        username: username.value,
+        password: password.value,
+      };
+      const user = await loginService.login(credentials);
       localStorage.setItem('user', JSON.stringify(user));
       setUser(user);
-      setUsername('');
-      setPassword('');
     } catch (error) {
       setErrorMessage('Wrong credentials');
       setTimeout(() => {
@@ -58,11 +63,9 @@ function App() {
         <Message messageType='success' message={successMessage} />
         <Message messageType='error' message={errorMessage} />
         <LoginForm
-          handleLogin={handleLogin}
           username={username}
           password={password}
-          setUsername={setUsername}
-          setPassword={setPassword}
+          handleLogin={handleLogin}
         />
       </div>
     );
