@@ -28,9 +28,14 @@ const reducer = (state = initialState, action) => {
         ...anecdoteToVote,
         votes: anecdoteToVote.votes + 1,
       };
-      return state.map(anecdote =>
-        anecdote.id !== id ? anecdote : votedAnecdote
-      );
+
+      return state
+        .map(anecdote => (anecdote.id !== id ? anecdote : votedAnecdote))
+        .slice()
+        .sort((a, b) => b.votes - a.votes);
+    case 'CREATE_ANECDOTE':
+      const newAnecdote = { ...action.data };
+      return state.concat(newAnecdote);
     default:
       return state;
   }
@@ -40,6 +45,13 @@ export const voteAnecdote = id => {
   return {
     type: 'VOTE',
     data: { id },
+  };
+};
+
+export const createAnecdote = content => {
+  return {
+    type: 'CREATE_ANECDOTE',
+    data: asObject(content),
   };
 };
 
