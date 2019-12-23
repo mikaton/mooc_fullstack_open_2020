@@ -21,7 +21,6 @@ function App() {
     if (loggedUser) {
       const user = JSON.parse(loggedUser);
       setUser(user);
-      blogService.setToken(user.token);
     }
   }, []);
 
@@ -56,8 +55,8 @@ function App() {
   const loginForm = () => {
     return (
       <div>
-        <Message messageType="success" message={successMessage} />
-        <Message messageType="error" message={errorMessage} />
+        <Message messageType='success' message={successMessage} />
+        <Message messageType='error' message={errorMessage} />
         <LoginForm
           handleLogin={handleLogin}
           username={username}
@@ -70,12 +69,13 @@ function App() {
   };
 
   return (
-    <div className="App">
-      {user === null && loginForm()}
-      {user !== null && (
+    <div className='App'>
+      {!user ? (
+        loginForm()
+      ) : (
         <div>
-          <Message messageType="success" message={successMessage} />
-          <Message messageType="error" message={errorMessage} />
+          <Message messageType='success' message={successMessage} />
+          <Message messageType='error' message={errorMessage} />
           <AddBlogForm
             user={user}
             blogs={blogs}
