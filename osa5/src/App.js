@@ -44,6 +44,8 @@ function App() {
       const user = await loginService.login(credentials);
       localStorage.setItem('user', JSON.stringify(user));
       setUser(user);
+      username.reset();
+      password.reset();
     } catch (error) {
       setErrorMessage('Wrong credentials');
       setTimeout(() => {
