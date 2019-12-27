@@ -26,12 +26,24 @@ const Menu = () => {
   );
 };
 
+const Anecdote = ({ anecdote }) => (
+  <div>
+    <h2>{anecdote.content}</h2>
+    <p>has {anecdote.votes} votes</p>
+    <p>
+      for more info see <a href={anecdote.info}>{anecdote.info}</a>
+    </p>
+  </div>
+);
+
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map(anecdote => (
-        <li key={anecdote.id}>{anecdote.content}</li>
+        <li key={anecdote.id}>
+          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>
       ))}
     </ul>
   </div>
@@ -73,7 +85,7 @@ const Footer = () => (
   </div>
 );
 
-const CreateNew = props => {
+let CreateNew = props => {
   const [content, setContent] = useState('');
   const [author, setAuthor] = useState('');
   const [info, setInfo] = useState('');
@@ -86,6 +98,7 @@ const CreateNew = props => {
       info,
       votes: 0,
     });
+    props.history.push('/');
   };
 
   return (
@@ -122,6 +135,8 @@ const CreateNew = props => {
   );
 };
 
+CreateNew = withRouter(CreateNew);
+
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
     {
@@ -145,6 +160,9 @@ const App = () => {
   const addNew = anecdote => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
     setAnecdotes(anecdotes.concat(anecdote));
+
+    setNotification(`a new anecdote ${anecdote.content} created!`);
+    setTimeout(() => setNotification(null), 10000);
   };
 
   const anecdoteById = id => anecdotes.find(a => a.id === id);
@@ -167,11 +185,19 @@ const App = () => {
         <div>
           <Menu />
         </div>
+        <div>{notification ? notification : <div></div>}</div>
         <div>
           <Route
             exact
             path='/'
             render={() => <AnecdoteList anecdotes={anecdotes} />}
+          />
+          <Route
+            exact
+            path='/anecdotes/:id'
+            render={({ match }) => (
+              <Anecdote anecdote={anecdoteById(match.params.id)} />
+            )}
           />
           <Route
             exact
