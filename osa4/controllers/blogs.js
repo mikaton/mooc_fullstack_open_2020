@@ -51,8 +51,6 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 
     const blog = await Blog.findById(id);
 
-    console.log(blog.id);
-
     if (blog.user.toString() !== decodedToken.id.toString()) {
       return response
         .status(401)
@@ -60,7 +58,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
     }
 
     await Blog.deleteOne({ _id: id });
-    response.status(200).json({ message: 'Blog deleted successfully' });
+    response.status(200).json(blog);
   } catch (error) {
     next(error);
   }
@@ -70,7 +68,7 @@ blogsRouter.patch('/:id', async (request, response, next) => {
   const body = request.body;
   try {
     const result = await Blog.findByIdAndUpdate(request.params.id, body);
-    response.status(200).json(result);
+    response.status(200).json(result.toJSON());
   } catch (error) {
     return next(error);
   }

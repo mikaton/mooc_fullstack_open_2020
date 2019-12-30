@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
-import blogService from './services/blogs';
 import loginService from './services/login';
 
 import LoginForm from './components/LoginForm';
@@ -10,10 +8,10 @@ import Message from './components/Message';
 
 import { connect } from 'react-redux';
 import { setMessage } from './reducers/messageReducer';
+import { initBlogs } from './reducers/blogReducer';
 import { useField } from './hooks';
 
 function App(props) {
-  const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
 
   const username = useField('text');
@@ -28,11 +26,8 @@ function App(props) {
   }, []);
 
   useEffect(() => {
-    blogService.getAll().then(initialBlogs => {
-      initialBlogs.sort((a, b) => b.likes - a.likes);
-      setBlogs(initialBlogs);
-    });
-  }, []);
+    props.initBlogs();
+  }, [props]);
 
   const handleLogin = async event => {
     event.preventDefault();
@@ -70,17 +65,12 @@ function App(props) {
       ) : (
         <div>
           <Message />
-          <AddBlogForm user={user} blogs={blogs} setBlogs={setBlogs} />
-          <BlogList
-            user={user}
-            blogs={blogs}
-            setBlogs={setBlogs}
-            handleLogout={handleLogout}
-          />
+          <AddBlogForm user={user} />
+          <BlogList user={user} handleLogout={handleLogout} />
         </div>
       )}
     </div>
   );
 }
 
-export default connect(null, { setMessage })(App);
+export default connect(null, { setMessage, initBlogs })(App);

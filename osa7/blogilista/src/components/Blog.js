@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
 import { setMessage } from '../reducers/messageReducer';
+import { updateBlog, deleteBlog } from '../reducers/blogReducer';
 import { connect } from 'react-redux';
 
-const Blog = ({ user, blog, setBlogs }) => {
+const Blog = props => {
   const [showBlogDetails, setShowBlogDetails] = useState(false);
 
   const blogStyle = {
@@ -14,32 +14,33 @@ const Blog = ({ user, blog, setBlogs }) => {
     marginBottom: 5,
   };
 
-  const isUserAddedBlog = user.username === blog.user.username;
+  const isUserAddedBlog = props.user.username === props.blog.user.username;
   const showIfUserAddedBlog = { display: isUserAddedBlog ? '' : 'none' };
 
   const handleLike = async () => {
-    const updateData = {
-      likes: blog.likes + 1,
-    };
     try {
-      await blogService.update(blog.id, updateData);
-      const blogs = await blogService.getAll();
-      setBlogs(blogs);
-    } catch (error) {
-      //setMessage('Something went wrong', 5);
-      console.error(error);
+      const updateData = {
+        likes: props.blog.likes + 1,
+      };
+      props.updateBlog(props.blog, updateData);
+      props.setMessage(
+        `You liked blog ${props.blog.title} by ${props.blog.author}`,
+        5
+      );
+    } catch (exception) {
+      props.setMessage(`Error: ${exception.message}`, 5);
     }
   };
 
   const handleDelete = async () => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+    if (
+      window.confirm(`Remove blog ${props.blog.title} by ${props.blog.author}?`)
+    ) {
       try {
-        const response = await blogService.remove(blog.id);
-        const blogs = await blogService.getAll();
-        setBlogs(blogs);
-      } catch (error) {
-        //setMessage('Something went wrong', 5);
-        console.error(error);
+        await props.deleteBlog(props.blog.id);
+        props.setMessage(`Successfully deleted blog ${props.blog.title}`, 5);
+      } catch (exception) {
+        props.setMessage(`Error: ${exception.message}`, 5);
       }
     }
   };
@@ -47,12 +48,12 @@ const Blog = ({ user, blog, setBlogs }) => {
   const blogDetails = () => (
     <div>
       <button onClick={() => setShowBlogDetails(false)}>hide details</button>
-      <p>{blog.title}</p>
-      <a href={blog.url}>{blog.url}</a>
+      <p>{props.blog.title}</p>
+      <a href={props.blog.url}>{props.blog.url}</a>
       <p>
-        {blog.likes} likes <button onClick={handleLike}>like</button>
+        {props.blog.likes} likes <button onClick={handleLike}>like</button>
       </p>
-      <p>added by {blog.user.name}</p>
+      <p>added by {props.blog.user.name}</p>
       <div style={showIfUserAddedBlog}>
         <button onClick={handleDelete}>remove</button>
       </div>
@@ -64,11 +65,11 @@ const Blog = ({ user, blog, setBlogs }) => {
       {showBlogDetails && blogDetails()}
       {!showBlogDetails && (
         <div className='blog' onClick={() => setShowBlogDetails(true)}>
-          {blog.title} {blog.author}
+          {props.blog.title} {props.blog.author}
         </div>
       )}
     </div>
   );
 };
 
-export default connect(null, { setMessage })(Blog);
+export default connect(null, { setMessage, updateBlog, deleteBlog })(Blog);

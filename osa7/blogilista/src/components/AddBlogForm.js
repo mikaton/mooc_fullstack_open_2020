@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { setMessage } from '../reducers/messageReducer';
-import blogService from '../services/blogs';
+import { addBlog } from '../reducers/blogReducer';
 
 function AddBlogForm(props) {
   const [title, setTitle] = useState('');
@@ -17,14 +17,16 @@ function AddBlogForm(props) {
         author,
         url,
       };
-      const result = await blogService.create(newBlog);
-
-      props.setBlogs(props.blogs.concat(result));
+      props.addBlog(newBlog);
+      props.setMessage(
+        `Added new blog ${newBlog.title} by ${newBlog.author}`,
+        5
+      );
       setTitle('');
       setAuthor('');
       setUrl('');
     } catch (exception) {
-      props.setMessage('Title or URL missing', 5);
+      props.setMessage(exception.message, 5);
     }
   };
 
@@ -75,4 +77,4 @@ function AddBlogForm(props) {
   );
 }
 
-export default connect(null, { setMessage })(AddBlogForm);
+export default connect(null, { setMessage, addBlog })(AddBlogForm);

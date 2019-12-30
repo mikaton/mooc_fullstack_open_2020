@@ -1,17 +1,25 @@
 import React from 'react';
 import Blog from './Blog';
 
-function BlogList({ user, blogs, setBlogs, handleLogout }) {
+import { connect } from 'react-redux';
+
+function BlogList(props) {
   return (
     <div>
       <h2>blogs</h2>
-      <p>{user.name} logged in</p>
-      <button onClick={handleLogout}>logout</button>
-      {blogs.map(blog => (
-        <Blog key={blog.id} user={user} blog={blog} setBlogs={setBlogs} />
+      <p>{props.user.name} logged in</p>
+      <button onClick={props.handleLogout}>logout</button>
+      {props.blogs.map(blog => (
+        <Blog key={blog.id} user={props.user} blog={blog} />
       ))}
     </div>
   );
 }
 
-export default BlogList;
+const mapStateToProps = state => {
+  return {
+    blogs: state.blogs,
+  };
+};
+
+export default connect(mapStateToProps)(BlogList);
