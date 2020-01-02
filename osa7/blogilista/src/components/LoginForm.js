@@ -12,7 +12,7 @@ function LoginForm({ username, password, handleLogin }) {
         password
         <input {...resetExcluded(password)} />
       </div>
-      <button type='submit'>login</button>
+      <button type="submit">login</button>
     </form>
   );
 }

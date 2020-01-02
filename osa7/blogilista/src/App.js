@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import loginService from './services/login';
 
 import LoginForm from './components/LoginForm';
@@ -9,25 +9,27 @@ import Message from './components/Message';
 import { connect } from 'react-redux';
 import { setMessage } from './reducers/messageReducer';
 import { initBlogs } from './reducers/blogReducer';
+import { initUsers } from './reducers/userReducer';
+import { setActiveUser } from './reducers/loginReducer';
+
 import { useField } from './hooks';
 
 function App(props) {
-  const [user, setUser] = useState(null);
-
   const username = useField('text');
   const password = useField('password');
+
+  useEffect(() => {
+    props.initBlogs();
+    props.initUsers();
+  }, []);
 
   useEffect(() => {
     const loggedUser = localStorage.getItem('user');
     if (loggedUser) {
       const user = JSON.parse(loggedUser);
-      setUser(user);
+      props.setActiveUser(user);
     }
   }, []);
-
-  useEffect(() => {
-    props.initBlogs();
-  }, [props]);
 
   const handleLogin = async event => {
     event.preventDefault();
@@ -38,7 +40,7 @@ function App(props) {
       };
       const user = await loginService.login(credentials);
       localStorage.setItem('user', JSON.stringify(user));
-      setUser(user);
+      props.setActiveUser(user);
       username.reset();
       password.reset();
     } catch (error) {
@@ -48,12 +50,12 @@ function App(props) {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
-    setUser(null);
+    props.setActiveUser(null);
   };
 
   return (
-    <div className='App'>
-      {!user ? (
+    <div className="App">
+      {!props.activeUser ? (
         <div>
           <Message />
           <LoginForm
@@ -65,12 +67,23 @@ function App(props) {
       ) : (
         <div>
           <Message />
-          <AddBlogForm user={user} />
-          <BlogList user={user} handleLogout={handleLogout} />
+          <AddBlogForm user={props.activeUser} />
+          <BlogList user={props.activeUser} handleLogout={handleLogout} />
         </div>
       )}
     </div>
   );
 }
 
-export default connect(null, { setMessage, initBlogs })(App);
+const mapStateToProps = state => {
+  return {
+    activeUser: state.activeUser,
+  };
+};
+
+export default connect(mapStateToProps, {
+  setMessage,
+  initBlogs,
+  initUsers,
+  setActiveUser,
+})(App);
