@@ -5,6 +5,7 @@ import LoginForm from './components/LoginForm';
 import BlogList from './components/BlogList';
 import AddBlogForm from './components/AddBlogForm';
 import Message from './components/Message';
+import UsersOverviewTable from './components/UsersOverviewTable';
 
 import { connect } from 'react-redux';
 import { setMessage } from './reducers/messageReducer';
@@ -69,6 +70,7 @@ function App(props) {
           <Message />
           <AddBlogForm user={props.activeUser} />
           <BlogList user={props.activeUser} handleLogout={handleLogout} />
+          <UsersOverviewTable />
         </div>
       )}
     </div>
