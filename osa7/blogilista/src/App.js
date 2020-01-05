@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import loginService from './services/login';
 
 import LoginForm from './components/LoginForm';
 import BlogList from './components/BlogList';
+import Blog from './components/Blog';
 import AddBlogForm from './components/AddBlogForm';
 import Message from './components/Message';
 import UsersOverviewTable from './components/UsersOverviewTable';
-
+import NavigationMenu from './components/NavigationMenu';
+import User from './components/User';
 import { connect } from 'react-redux';
 import { setMessage } from './reducers/messageReducer';
 import { initBlogs } from './reducers/blogReducer';
@@ -31,6 +34,9 @@ function App(props) {
       props.setActiveUser(user);
     }
   }, []);
+
+  const userById = id => props.users.find(user => user.id === id);
+  const blogById = id => props.blogs.find(blog => blog.id === id);
 
   const handleLogin = async event => {
     event.preventDefault();
@@ -67,10 +73,35 @@ function App(props) {
         </div>
       ) : (
         <div>
-          <Message />
-          <AddBlogForm user={props.activeUser} />
-          <BlogList user={props.activeUser} handleLogout={handleLogout} />
-          <UsersOverviewTable />
+          <Router>
+            <NavigationMenu
+              user={props.activeUser}
+              handleLogout={handleLogout}
+            />
+            <Message />
+            <Route exact path="/blogs" render={() => <BlogList />} />
+            <Route
+              exact
+              path="/blogs/:id"
+              render={({ match }) => <Blog blog={blogById(match.params.id)} />}
+            />
+            <Route exact path="/users" render={() => <UsersOverviewTable />} />
+            <Route
+              exact
+              path="/users/:id"
+              render={({ match }) => <User user={userById(match.params.id)} />}
+            />
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <div>
+                  <h2>Blog app</h2>
+                  <AddBlogForm />
+                </div>
+              )}
+            />
+          </Router>
         </div>
       )}
     </div>
@@ -80,6 +111,8 @@ function App(props) {
 const mapStateToProps = state => {
   return {
     activeUser: state.activeUser,
+    users: state.users,
+    blogs: state.blogs,
   };
 };
 
