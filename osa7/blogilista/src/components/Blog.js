@@ -1,9 +1,12 @@
 import React from 'react';
 import { setMessage } from '../reducers/messageReducer';
-import { updateBlog, deleteBlog } from '../reducers/blogReducer';
+import { updateBlog, deleteBlog, commentBlog } from '../reducers/blogReducer';
 import { connect } from 'react-redux';
+import { useField } from '../hooks';
 
 const Blog = props => {
+  const comment = useField('text');
+  const resetExcluded = ({ reset, ...rest }) => rest;
   /*const isUserAddedBlog = props.user.username === props.blog.user.username;
   const showIfUserAddedBlog = { display: isUserAddedBlog ? '' : 'none' }; */
   if (props.blog === undefined) return null;
@@ -36,6 +39,17 @@ const Blog = props => {
     }
   }; */
 
+  const handleComment = async event => {
+    event.preventDefault();
+
+    try {
+      props.commentBlog(props.blog, comment.value);
+      comment.reset();
+    } catch (exception) {
+      props.setMessage('Error: ', exception.message);
+    }
+  };
+
   return (
     <div>
       <h1>
@@ -47,18 +61,30 @@ const Blog = props => {
       </p>
 
       <p>added by {props.blog.user.name}</p>
+      <h3>comments</h3>
+      <form onSubmit={handleComment}>
+        <input {...resetExcluded(comment)} />
+        <button type="submit">add comment</button>
+      </form>
+      <ul>
+        {props.blog.comments.map(comment => (
+          <li key={comment}>{comment}</li>
+        ))}
+      </ul>
     </div>
   );
 };
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(ownProps);
   return {
     user: state.activeUser,
     blog: ownProps.blog,
   };
 };
 
-export default connect(mapStateToProps, { setMessage, updateBlog, deleteBlog })(
-  Blog
-);
+export default connect(mapStateToProps, {
+  setMessage,
+  updateBlog,
+  deleteBlog,
+  commentBlog,
+})(Blog);

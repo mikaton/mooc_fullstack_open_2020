@@ -14,6 +14,12 @@ const create = async newBlog => {
   return response.data;
 };
 
+const comment = async (blog, comment) => {
+  const object = { comment: comment };
+  const response = await axios.post(`${baseUrl}/${blog}/comments`, object);
+  return response.data;
+};
+
 const update = async (blog, updateData) => {
   const config = {
     Authorization: `Bearer ${JSON.parse(localStorage.getItem('user')).token}`,
@@ -34,4 +40,4 @@ const remove = async blog => {
   return response.data;
 };
 
-export default { getAll, create, update, remove };
+export default { getAll, create, comment, update, remove };

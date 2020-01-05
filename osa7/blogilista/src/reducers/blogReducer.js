@@ -7,6 +7,11 @@ const blogReducer = (state = [], action) => {
     case 'ADD_BLOG':
       const newBlog = { ...action.data };
       return state.concat(newBlog);
+    case 'COMMENT_BLOG':
+      const commentedBlog = { ...action.data };
+      return state.map(blog =>
+        blog.id !== action.data.id ? blog : commentedBlog
+      );
     case 'UPDATE_BLOG':
       const likedBlog = { ...action.data };
       return state.map(blog => (blog.id !== action.data.id ? blog : likedBlog));
@@ -34,6 +39,21 @@ export const addBlog = blog => {
     });
   };
 };
+
+export const commentBlog = (blog, comment) => {
+  return async dispatch => {
+    try {
+      const commentedBlog = await blogService.comment(blog.id, comment);
+      dispatch({
+        type: 'COMMENT_BLOG',
+        data: commentedBlog,
+      });
+    } catch (exception) {
+      console.error(exception.message);
+    }
+  };
+};
+
 export const updateBlog = (blog, updateData) => {
   return async dispatch => {
     const updatedBlog = await blogService.update(blog.id, updateData);
