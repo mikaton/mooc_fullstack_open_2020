@@ -1,10 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-const style = {
-  textAlign: 'right',
-};
+const TdAlignedToRight = styled.td`
+  text-align: right;
+`;
+const StyledLink = styled(Link)`
+  color: #e53e3e;
+  text-decoration: none;
+`;
+
 const UsersOverviewTable = props => {
   return (
     <div>
@@ -20,9 +26,9 @@ const UsersOverviewTable = props => {
           {props.users.map(user => (
             <tr key={user.id}>
               <td>
-                <Link to={`/users/${user.id}`}>{user.name}</Link>
+                <StyledLink to={`/users/${user.id}`}>{user.name}</StyledLink>
               </td>
-              <td style={style}>{user.blogs.length}</td>
+              <TdAlignedToRight>{user.blogs.length}</TdAlignedToRight>
             </tr>
           ))}
         </tbody>

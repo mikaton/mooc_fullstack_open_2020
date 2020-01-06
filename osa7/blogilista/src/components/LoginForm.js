@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Button from '../styled-components/Button';
+
 function LoginForm({ username, password, handleLogin }) {
   const resetExcluded = ({ reset, ...rest }) => rest;
   return (
@@ -12,7 +14,9 @@ function LoginForm({ username, password, handleLogin }) {
         password
         <input {...resetExcluded(password)} />
       </div>
-      <button type="submit">login</button>
+      <Button primary type="submit">
+        login
+      </Button>
     </form>
   );
 }

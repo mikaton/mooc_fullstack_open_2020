@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 const baseUrl = '/api/blogs';
 
 const getAll = () => {
@@ -15,7 +16,7 @@ const create = async newBlog => {
 };
 
 const comment = async (blog, comment) => {
-  const object = { comment: comment };
+  const object = { comment };
   const response = await axios.post(`${baseUrl}/${blog}/comments`, object);
   return response.data;
 };

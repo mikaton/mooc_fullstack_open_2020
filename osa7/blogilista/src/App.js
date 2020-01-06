@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 import loginService from './services/login';
-
 import LoginForm from './components/LoginForm';
 import BlogList from './components/BlogList';
 import Blog from './components/Blog';
@@ -10,13 +11,19 @@ import Message from './components/Message';
 import UsersOverviewTable from './components/UsersOverviewTable';
 import NavigationMenu from './components/NavigationMenu';
 import User from './components/User';
-import { connect } from 'react-redux';
 import { setMessage } from './reducers/messageReducer';
 import { initBlogs } from './reducers/blogReducer';
 import { initUsers } from './reducers/userReducer';
 import { setActiveUser } from './reducers/loginReducer';
-
 import { useField } from './hooks';
+
+const Page = styled.div`
+  padding: 1em;
+  width: 1080px;
+  margin: auto;
+  border: 1px solid #e2e8f0;
+  font-family: 'Roboto', sans-serif;
+`;
 
 function App(props) {
   const username = useField('text');
@@ -61,23 +68,23 @@ function App(props) {
   };
 
   return (
-    <div className="App">
+    <div>
       {!props.activeUser ? (
         <div>
-          <Message />
-          <LoginForm
-            username={username}
-            password={password}
-            handleLogin={handleLogin}
-          />
+          <Page>
+            <Message />
+            <LoginForm
+              username={username}
+              password={password}
+              handleLogin={handleLogin}
+            />
+          </Page>
         </div>
       ) : (
-        <div>
+        <Page>
           <Router>
-            <NavigationMenu
-              user={props.activeUser}
-              handleLogout={handleLogout}
-            />
+            <NavigationMenu user={props.activeUser} handleLogout={handleLogout} />
+
             <Message />
             <Route exact path="/blogs" render={() => <BlogList />} />
             <Route
@@ -102,7 +109,7 @@ function App(props) {
               )}
             />
           </Router>
-        </div>
+        </Page>
       )}
     </div>
   );

@@ -1,29 +1,39 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
+import Button from '../styled-components/Button';
 
 const NavigationMenu = props => {
-  const navStyle = {
-    padding: 5,
-    backgroundColor: '#CBD5E0',
-  };
-  const linkStyle = {
-    padding: 3,
-  };
+  const Navigation = styled.div`
+    background-color: #e53e3e;
+    padding: 1em;
+    color: #fff;
+  `;
+  const StyledLink = styled(Link)`
+    color: #fff;
+    margin: 5px;
+    text-decoration: none;
 
+    &:hover {
+      background-color: #fff;
+      color: #e53e3e;
+    }
+  `;
+  const StyledUserDetails = styled.div`
+    float: right;
+  `;
   return (
-    <div style={navStyle}>
-      <div>
-        <Link style={linkStyle} to="/blogs">
-          blogs
-        </Link>
-        <Link style={linkStyle} to="/users">
-          users
-        </Link>
+    <Navigation>
+      <StyledLink to="/blogs">blogs</StyledLink>
+      <StyledLink to="/users">users</StyledLink>
+      <StyledUserDetails>
         {props.user.name} logged in
-        <button onClick={props.handleLogout}>logout</button>
-      </div>
-    </div>
+        <Button primary onClick={props.handleLogout}>
+          logout
+        </Button>
+      </StyledUserDetails>
+    </Navigation>
   );
 };
 

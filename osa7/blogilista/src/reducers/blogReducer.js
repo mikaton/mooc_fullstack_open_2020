@@ -9,9 +9,7 @@ const blogReducer = (state = [], action) => {
       return state.concat(newBlog);
     case 'COMMENT_BLOG':
       const commentedBlog = { ...action.data };
-      return state.map(blog =>
-        blog.id !== action.data.id ? blog : commentedBlog
-      );
+      return state.map(blog => (blog.id !== action.data.id ? blog : commentedBlog));
     case 'UPDATE_BLOG':
       const likedBlog = { ...action.data };
       return state.map(blog => (blog.id !== action.data.id ? blog : likedBlog));

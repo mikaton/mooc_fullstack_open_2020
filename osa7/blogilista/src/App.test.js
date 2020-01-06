@@ -1,14 +1,15 @@
 import React from 'react';
 import { render, waitForElement, cleanup } from '@testing-library/react';
-jest.mock('./services/blogs');
 import App from './App';
+
+jest.mock('./services/blogs');
 
 beforeEach(cleanup);
 
 describe('<App />', () => {
   test('only renders login screen if no user is logged in', async () => {
     localStorage.setItem('user', null);
-    let component = render(<App />);
+    const component = render(<App />);
     component.rerender(<App />);
 
     await waitForElement(() => component.getByText('login'));
@@ -25,7 +26,7 @@ describe('<App />', () => {
 
     localStorage.setItem('user', JSON.stringify(user));
 
-    let component = render(<App />);
+    const component = render(<App />);
     component.rerender(<App />);
 
     await waitForElement(() => component.getByText('new blog'));

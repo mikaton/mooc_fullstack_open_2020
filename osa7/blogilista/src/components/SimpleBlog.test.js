@@ -28,9 +28,7 @@ test('clicking the like button twice fires event handler twice', () => {
 
   const mockHandler = jest.fn();
 
-  const { getByText } = render(
-    <SimpleBlog blog={blog} onClick={mockHandler} />
-  );
+  const { getByText } = render(<SimpleBlog blog={blog} onClick={mockHandler} />);
 
   const button = getByText('like');
   fireEvent.click(button);
