@@ -39,8 +39,6 @@ function App(props) {
     if (loggedUser) {
       const user = JSON.parse(loggedUser);
       props.setActiveUser(user);
-    } else {
-      props.setActiveUser(null);
     }
   }, []);
 

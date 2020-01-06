@@ -8,11 +8,11 @@ function LoginForm({ username, password, handleLogin }) {
     <form onSubmit={handleLogin}>
       <div>
         username
-        <input {...resetExcluded(username)} />
+        <input id="username" {...resetExcluded(username)} />
       </div>
       <div>
         password
-        <input {...resetExcluded(password)} />
+        <input id="password" {...resetExcluded(password)} />
       </div>
       <Button primary type="submit">
         login

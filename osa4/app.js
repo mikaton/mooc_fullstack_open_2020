@@ -6,6 +6,7 @@ const cors = require('cors');
 const blogsRouter = require('./controllers/blogs');
 const usersRouter = require('./controllers/users');
 const loginRouter = require('./controllers/login');
+
 const middleware = require('./utils/middleware');
 const mongoose = require('mongoose');
 const logger = require('./utils/logger');
@@ -28,6 +29,12 @@ app.use(express.static('build'));
 app.use(bodyParser.json());
 app.use(middleware.requestLogger);
 app.use(middleware.tokenExtractor);
+
+if (process.env.NODE_ENV === 'test') {
+  console.log('node env = test');
+  const testRouter = require('./controllers/testing');
+  app.use('/api/testing', testRouter);
+}
 
 app.use('/api/blogs', blogsRouter);
 app.use('/api/users', usersRouter);

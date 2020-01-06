@@ -18,7 +18,7 @@ function BlogList(props) {
     <div>
       <h2>blogs</h2>
       {props.blogs.map(blog => (
-        <StyledDiv key={blog.id}>
+        <StyledDiv id="blog-list" key={blog.id}>
           <StyledLink to={`/blogs/${blog.id}`}>
             {blog.title} {blog.author}
           </StyledLink>

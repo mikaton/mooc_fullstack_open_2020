@@ -42,6 +42,7 @@ function AddBlogForm(props) {
           <div>
             title:
             <input
+              id="blog-title"
               type="text"
               value={title}
               name="Title"
@@ -51,6 +52,7 @@ function AddBlogForm(props) {
           <div>
             author:
             <input
+              id="blog-author"
               type="text"
               value={author}
               name="Author"
@@ -60,6 +62,7 @@ function AddBlogForm(props) {
           <div>
             url:
             <input
+              id="blog-url"
               type="text"
               value={url}
               name="URL"
@@ -68,7 +71,7 @@ function AddBlogForm(props) {
           </div>
 
           <Button primary type="submit">
-            create
+            submit
           </Button>
         </form>
         <Button onClick={() => setBlogFormVisible(false)}>cancel</Button>
