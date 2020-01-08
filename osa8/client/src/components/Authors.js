@@ -1,26 +1,17 @@
-import React, { useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
-
-const ALL_AUTHORS = gql`
-  {
-    allAuthors {
-      name
-      born
-      bookCount
-    }
-  }
-`;
+import React from 'react';
 
 const Authors = props => {
-  const { loading, error, data } = useQuery(ALL_AUTHORS);
-
   if (!props.show) {
     return null;
   }
 
-  if (loading) return <div>loading...</div>;
-  if (error)
-    return <div style={{ color: 'red' }}>{error.graphQLErrors[0].message}</div>;
+  if (props.result.loading) return <div>loading...</div>;
+  if (props.result.error)
+    return (
+      <div style={{ color: 'red' }}>
+        {props.result.error.graphQLErrors[0].message}
+      </div>
+    );
 
   return (
     <div>
@@ -32,7 +23,7 @@ const Authors = props => {
             <th>born</th>
             <th>books</th>
           </tr>
-          {data.allAuthors.map(a => (
+          {props.result.data.allAuthors.map(a => (
             <tr key={a.name}>
               <td>{a.name}</td>
               <td>{a.born}</td>

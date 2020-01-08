@@ -2,40 +2,72 @@ import React, { useState } from 'react';
 import Authors from './components/Authors';
 import Books from './components/Books';
 import NewBook from './components/NewBook';
-import {
-  ApolloClient,
-  ApolloProvider,
-  gql,
-  InMemoryCache,
-  HttpLink,
-} from '@apollo/client';
+import { gql, useQuery, useMutation } from '@apollo/client';
 
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: new HttpLink({
-    uri: 'http://localhost:4000/graphql',
-  }),
-});
+const ALL_BOOKS = gql`
+  {
+    allBooks {
+      title
+      author
+      published
+    }
+  }
+`;
+
+const ALL_AUTHORS = gql`
+  {
+    allAuthors {
+      name
+      born
+      bookCount
+    }
+  }
+`;
+
+const CREATE_BOOK = gql`
+  mutation addBook(
+    $title: String!
+    $published: Int!
+    $author: String!
+    $genres: [String]
+  ) {
+    addBook(
+      title: $title
+      published: $published
+      author: $author
+      genres: $genres
+    ) {
+      title
+      published
+      author
+      genres
+    }
+  }
+`;
 
 const App = () => {
   const [page, setPage] = useState('authors');
 
+  const books = useQuery(ALL_BOOKS);
+  const authors = useQuery(ALL_AUTHORS);
+  const [addBook] = useMutation(CREATE_BOOK, {
+    refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_BOOKS }],
+  });
+
   return (
-    <ApolloProvider client={client}>
+    <div>
       <div>
-        <div>
-          <button onClick={() => setPage('authors')}>authors</button>
-          <button onClick={() => setPage('books')}>books</button>
-          <button onClick={() => setPage('add')}>add book</button>
-        </div>
-
-        <Authors show={page === 'authors'} />
-
-        <Books show={page === 'books'} />
-
-        <NewBook show={page === 'add'} />
+        <button onClick={() => setPage('authors')}>authors</button>
+        <button onClick={() => setPage('books')}>books</button>
+        <button onClick={() => setPage('add')}>add book</button>
       </div>
-    </ApolloProvider>
+
+      <Authors result={authors} show={page === 'authors'} />
+
+      <Books result={books} show={page === 'books'} />
+
+      <NewBook addBook={addBook} show={page === 'add'} />
+    </div>
   );
 };
 

@@ -1,32 +1,39 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-const NewBook = (props) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuhtor] = useState('')
-  const [published, setPublished] = useState('')
-  const [genre, setGenre] = useState('')
-  const [genres, setGenres] = useState([])
+const NewBook = props => {
+  const [title, setTitle] = useState('');
+  const [author, setAuhtor] = useState('');
+  const [published, setPublished] = useState('');
+  const [genre, setGenre] = useState('');
+  const [genres, setGenres] = useState([]);
 
   if (!props.show) {
-    return null
+    return null;
   }
 
-  const submit = async (e) => {
-    e.preventDefault()
+  const submit = async e => {
+    e.preventDefault();
 
-    console.log('add book...')
+    await props.addBook({
+      variables: {
+        title,
+        published: Number(published),
+        author,
+        genres,
+      },
+    });
 
-    setTitle('')
-    setPublished('')
-    setAuhtor('')
-    setGenres([])
-    setGenre('')
-  }
+    setTitle('');
+    setPublished('');
+    setAuhtor('');
+    setGenres([]);
+    setGenre('');
+  };
 
   const addGenre = () => {
-    setGenres(genres.concat(genre))
-    setGenre('')
-  }
+    setGenres(genres.concat(genre));
+    setGenre('');
+  };
 
   return (
     <div>
@@ -48,7 +55,7 @@ const NewBook = (props) => {
         <div>
           published
           <input
-            type='number'
+            type="number"
             value={published}
             onChange={({ target }) => setPublished(target.value)}
           />
@@ -58,15 +65,15 @@ const NewBook = (props) => {
             value={genre}
             onChange={({ target }) => setGenre(target.value)}
           />
-          <button onClick={addGenre} type="button">add genre</button>
+          <button onClick={addGenre} type="button">
+            add genre
+          </button>
         </div>
-        <div>
-          genres: {genres.join(' ')}
-        </div>
-        <button type='submit'>create book</button>
+        <div>genres: {genres.join(' ')}</div>
+        <button type="submit">create book</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default NewBook
+export default NewBook;
