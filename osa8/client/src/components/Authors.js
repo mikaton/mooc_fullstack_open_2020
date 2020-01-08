@@ -33,7 +33,10 @@ const Authors = props => {
           ))}
         </tbody>
       </table>
-      <EditBirthyearForm editAuthor={props.editAuthor} />
+      <EditBirthyearForm
+        editAuthor={props.editAuthor}
+        authors={props.result.data.allAuthors}
+      />
     </div>
   );
 };
