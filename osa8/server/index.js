@@ -62,12 +62,8 @@ const resolvers = {
         const books = await Book.find({ genres: args.genre });
         return books;
       }
-
       const books = await Book.find({}).populate('author');
-      const filteredBooks = books
-        .filter(book => book.author.name === args.author)
-        .map(book => book.genres.includes(args.genre));
-      console.log(filteredBooks);
+
       return books
         .filter(book => book.author.name === args.author)
         .filter(book => book.genres.includes(args.genre));
@@ -79,15 +75,23 @@ const resolvers = {
       let book;
       let author = await Author.findOne({ name: args.author });
       if (!author) {
-        author = new Author({ name: args.author, born: null });
-        await author.save();
+        try {
+          author = new Author({ name: args.author, born: null });
+          await author.save();
+          book = new Book({ ...args, author });
+          await book.save();
+          return book;
+        } catch (error) {
+          throw new UserInputError(error.message);
+        }
+      }
+      try {
         book = new Book({ ...args, author });
         await book.save();
         return book;
+      } catch (error) {
+        throw new UserInputError(error.message);
       }
-      book = new Book({ ...args, author });
-      await book.save();
-      return book;
     },
     editAuthor: async (root, args) => {
       const author = await Author.findOne({ name: args.name });
