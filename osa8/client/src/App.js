@@ -5,6 +5,7 @@ import NewBook from './components/NewBook';
 import { gql, useQuery, useMutation, useApolloClient } from '@apollo/client';
 import LoginForm from './components/LoginForm';
 import Recommendation from './components/Recommendation';
+import { ALL_BOOKS_BY_GENRE } from './components/Books';
 
 const ALL_BOOKS = gql`
   {
@@ -86,7 +87,7 @@ const App = () => {
   const authors = useQuery(ALL_AUTHORS);
   const currentUser = useQuery(GET_CURRENT_USER);
   const [addBook] = useMutation(CREATE_BOOK, {
-    refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_BOOKS }],
+    refetchQueries: [{ query: ALL_BOOKS_BY_GENRE, variables: { genre: null } }],
   });
   const [editAuthor] = useMutation(EDIT_BIRTHYEAR, {
     refetchQueries: [{ query: ALL_AUTHORS }],

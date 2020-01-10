@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { gql, useLazyQuery, useApolloClient } from '@apollo/client';
 
-const ALL_BOOKS_BY_GENRE = gql`
+export const ALL_BOOKS_BY_GENRE = gql`
   query allBooks($genre: String) {
     allBooks(genre: $genre) {
       title
