@@ -8,11 +8,7 @@ const Authors = props => {
 
   if (props.result.loading) return <div>loading...</div>;
   if (props.result.error)
-    return (
-      <div style={{ color: 'red' }}>
-        {props.result.error.graphQLErrors[0].message}
-      </div>
-    );
+    return <div style={{ color: 'red' }}>{props.result.error.message}</div>;
 
   return (
     <div>
@@ -28,7 +24,6 @@ const Authors = props => {
             <tr key={a.name}>
               <td>{a.name}</td>
               <td>{a.born}</td>
-              <td>{a.bookCount}</td>
             </tr>
           ))}
         </tbody>

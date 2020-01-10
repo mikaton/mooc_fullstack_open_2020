@@ -7,11 +7,7 @@ const Books = props => {
 
   if (props.result.loading) return <div>loading...</div>;
   if (props.result.error)
-    return (
-      <div style={{ color: 'red' }}>
-        {props.result.error.graphQLErrors[0].message}
-      </div>
-    );
+    return <div style={{ color: 'red' }}>{props.result.error.message}</div>;
 
   return (
     <div>
@@ -27,7 +23,7 @@ const Books = props => {
           {props.result.data.allBooks.map(a => (
             <tr key={a.title}>
               <td>{a.title}</td>
-              <td>{a.author}</td>
+              <td>{a.author.name}</td>
               <td>{a.published}</td>
             </tr>
           ))}
