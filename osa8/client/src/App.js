@@ -4,6 +4,7 @@ import Books from './components/Books';
 import NewBook from './components/NewBook';
 import { gql, useQuery, useMutation, useApolloClient } from '@apollo/client';
 import LoginForm from './components/LoginForm';
+import Recommendation from './components/Recommendation';
 
 const ALL_BOOKS = gql`
   {
@@ -13,6 +14,7 @@ const ALL_BOOKS = gql`
         name
       }
       published
+      genres
     }
   }
 `;
@@ -67,11 +69,22 @@ const LOGIN = gql`
   }
 `;
 
+const GET_CURRENT_USER = gql`
+  {
+    me {
+      username
+      favoriteGenre
+    }
+  }
+`;
+
 const App = () => {
   const [page, setPage] = useState('authors');
   const [token, setToken] = useState(null);
+
   const books = useQuery(ALL_BOOKS);
   const authors = useQuery(ALL_AUTHORS);
+  const currentUser = useQuery(GET_CURRENT_USER);
   const [addBook] = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_BOOKS }],
   });
@@ -101,6 +114,7 @@ const App = () => {
       <button onClick={() => setPage('authors')}>authors</button>
       <button onClick={() => setPage('books')}>books</button>
       <button onClick={() => setPage('add')}>add book</button>
+      <button onClick={() => setPage('recommendation')}>recommend</button>
       <button onClick={() => logout()}>log out</button>
     </div>
   );
@@ -118,13 +132,17 @@ const App = () => {
 
       <LoginForm
         login={login}
-        logout={logout}
         setToken={token => setToken(token)}
         setPage={() => setPage('authors')}
         show={page === 'login'}
       />
 
       <NewBook addBook={addBook} show={page === 'add'} />
+      <Recommendation
+        user={currentUser}
+        result={books}
+        show={page === 'recommendation'}
+      />
     </div>
   );
 };

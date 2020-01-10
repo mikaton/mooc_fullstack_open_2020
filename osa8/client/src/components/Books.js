@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Books = props => {
+  const [genre, setGenre] = useState('crime');
   if (!props.show) {
     return null;
   }
@@ -12,7 +13,7 @@ const Books = props => {
   return (
     <div>
       <h2>books</h2>
-
+      <p>in genre {genre}</p>
       <table>
         <tbody>
           <tr>
@@ -20,15 +21,32 @@ const Books = props => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {props.result.data.allBooks.map(a => (
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
-            </tr>
-          ))}
+          {genre === 'all genres'
+            ? props.result.data.allBooks.map(book => (
+                <tr key={book.title}>
+                  <td>{book.title}</td>
+                  <td>{book.author.name}</td>
+                  <td>{book.published}</td>
+                </tr>
+              ))
+            : props.result.data.allBooks
+                .filter(book => book.genres.includes(genre))
+                .map(book => (
+                  <tr key={book.title}>
+                    <td>{book.title}</td>
+                    <td>{book.author.name}</td>
+                    <td>{book.published}</td>
+                  </tr>
+                ))}
         </tbody>
       </table>
+      <button onClick={() => setGenre('refactoring')}>refactoring</button>
+      <button onClick={() => setGenre('agile')}>agile</button>
+      <button onClick={() => setGenre('patterns')}>patterns</button>
+      <button onClick={() => setGenre('design')}>design</button>
+      <button onClick={() => setGenre('crime')}>crime</button>
+      <button onClick={() => setGenre('classic')}>classic</button>
+      <button onClick={() => setGenre('all genres')}>all genres</button>
     </div>
   );
 };
