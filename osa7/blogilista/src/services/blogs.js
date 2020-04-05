@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 const baseUrl = '/api/blogs';
 
 const getAll = () => {
@@ -11,6 +12,12 @@ const create = async newBlog => {
     Authorization: `Bearer ${JSON.parse(localStorage.getItem('user')).token}`,
   };
   const response = await axios.post(baseUrl, newBlog, { headers: config });
+  return response.data;
+};
+
+const comment = async (blog, comment) => {
+  const object = { comment };
+  const response = await axios.post(`${baseUrl}/${blog}/comments`, object);
   return response.data;
 };
 
@@ -34,4 +41,4 @@ const remove = async blog => {
   return response.data;
 };
 
-export default { getAll, create, update, remove };
+export default { getAll, create, comment, update, remove };

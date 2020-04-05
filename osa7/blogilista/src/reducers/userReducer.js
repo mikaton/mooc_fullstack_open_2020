@@ -12,7 +12,7 @@ const userReducer = (state = [], action) => {
 };
 
 export const initUsers = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     const users = await userService.getAll();
     dispatch({
       type: 'INITIALIZE_USERS',

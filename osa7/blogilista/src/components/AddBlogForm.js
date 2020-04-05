@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { setMessage } from '../reducers/messageReducer';
 import { addBlog } from '../reducers/blogReducer';
+import Button from '../styled-components/Button';
 
 function AddBlogForm(props) {
   const [title, setTitle] = useState('');
@@ -18,10 +19,7 @@ function AddBlogForm(props) {
         url,
       };
       props.addBlog(newBlog);
-      props.setMessage(
-        `Added new blog ${newBlog.title} by ${newBlog.author}`,
-        5
-      );
+      props.setMessage(`Added new blog ${newBlog.title} by ${newBlog.author}`, 5);
       setTitle('');
       setAuthor('');
       setUrl('');
@@ -36,7 +34,7 @@ function AddBlogForm(props) {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={() => setBlogFormVisible(true)}>new blog</button>
+        <Button onClick={() => setBlogFormVisible(true)}>new blog</Button>
       </div>
       <div style={showWhenVisible}>
         <h2>create new</h2>
@@ -44,34 +42,39 @@ function AddBlogForm(props) {
           <div>
             title:
             <input
-              type='text'
+              id="blog-title"
+              type="text"
               value={title}
-              name='Title'
+              name="Title"
               onChange={({ target }) => setTitle(target.value)}
             />
           </div>
           <div>
             author:
             <input
-              type='text'
+              id="blog-author"
+              type="text"
               value={author}
-              name='Author'
+              name="Author"
               onChange={({ target }) => setAuthor(target.value)}
             />
           </div>
           <div>
             url:
             <input
-              type='text'
+              id="blog-url"
+              type="text"
               value={url}
-              name='URL'
+              name="URL"
               onChange={({ target }) => setUrl(target.value)}
             />
           </div>
 
-          <button type='submit'>create</button>
+          <Button primary type="submit">
+            submit
+          </Button>
         </form>
-        <button onClick={() => setBlogFormVisible(false)}>cancel</button>
+        <Button onClick={() => setBlogFormVisible(false)}>cancel</Button>
       </div>
     </div>
   );

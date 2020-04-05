@@ -8,6 +8,23 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs.map(blog => blog.toJSON()));
 });
 
+blogsRouter.post('/:id/comments', async (request, response, next) => {
+  if (!request.body.comment)
+    return response.status(400).json({ error: 'Comment missing' });
+
+  try {
+    const blog = await Blog.findById(request.params.id);
+
+    blog.comments = blog.comments.concat(request.body.comment);
+
+    await blog.save();
+
+    response.status(200).json(blog.toJSON());
+  } catch (error) {
+    next(error);
+  }
+});
+
 blogsRouter.post('/', async (request, response, next) => {
   const body = request.body;
 
@@ -29,6 +46,7 @@ blogsRouter.post('/', async (request, response, next) => {
       author: body.author,
       url: body.url,
       likes: body.likes || 0,
+      comments: body.comments || [],
       user: user._id,
     });
 

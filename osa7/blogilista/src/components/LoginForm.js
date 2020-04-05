@@ -1,18 +1,22 @@
 import React from 'react';
 
+import Button from '../styled-components/Button';
+
 function LoginForm({ username, password, handleLogin }) {
   const resetExcluded = ({ reset, ...rest }) => rest;
   return (
     <form onSubmit={handleLogin}>
       <div>
         username
-        <input {...resetExcluded(username)} />
+        <input id="username" {...resetExcluded(username)} />
       </div>
       <div>
         password
-        <input {...resetExcluded(password)} />
+        <input id="password" {...resetExcluded(password)} />
       </div>
-      <button type='submit'>login</button>
+      <Button primary type="submit">
+        login
+      </Button>
     </form>
   );
 }

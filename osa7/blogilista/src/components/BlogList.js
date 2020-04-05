@@ -1,16 +1,28 @@
 import React from 'react';
-import Blog from './Blog';
-
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
+
+const StyledLink = styled(Link)`
+  color: #e53e3e;
+  text-decoration: none;
+`;
+
+const StyledDiv = styled.div`
+  border: 1px solid #e2e8f0;
+  padding: 0.5em;
+`;
 
 function BlogList(props) {
   return (
     <div>
       <h2>blogs</h2>
-      <p>{props.user.name} logged in</p>
-      <button onClick={props.handleLogout}>logout</button>
       {props.blogs.map(blog => (
-        <Blog key={blog.id} user={props.user} blog={blog} />
+        <StyledDiv id="blog-list" key={blog.id}>
+          <StyledLink to={`/blogs/${blog.id}`}>
+            {blog.title} {blog.author}
+          </StyledLink>
+        </StyledDiv>
       ))}
     </div>
   );
