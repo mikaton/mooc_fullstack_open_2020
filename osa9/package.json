@@ -1,0 +1,15 @@
+{
+  "name": "osa9",
+  "version": "1.0.0",
+  "description": "fullstackopen.com osa9",
+  "main": "index.js",
+  "scripts": {
+    "calculateBmi": "ts-node bmiCalculator.ts"
+  },
+  "author": "Mika Tonteri",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^8.8.2",
+    "typescript": "^3.8.3"
+  }
+}
