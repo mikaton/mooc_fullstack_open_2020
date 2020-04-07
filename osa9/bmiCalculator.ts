@@ -1,5 +1,5 @@
 const calculateBmi = (weight: number, height: number): string => {
-  let heightInMeters = height / 100;
+  let heightInMeters: number = height / 100;
   const bmi: number = weight / (heightInMeters ** 2);
   
   if(bmi < 18.5) {
