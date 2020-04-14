@@ -1,5 +1,5 @@
 import diagnoses from '../data/diagnoses.json';
-import { Diagnose } from '../interfaces/diagnose';
+import { Diagnose } from '../types/diagnose';
 
 const getDiagnoses = (): Diagnose[] => {
   return diagnoses;
