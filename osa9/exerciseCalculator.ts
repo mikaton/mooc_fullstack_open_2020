@@ -1,26 +1,39 @@
 interface Result {
-  periodLength: number,
-  trainingDays: number,
-  success: boolean,
-  rating: number,
-  ratingDescription: string,
-  target: number,
-  average: number
+  periodLength: number;
+  trainingDays: number;
+  success: boolean;
+  rating: number;
+  ratingDescription: string;
+  target: number;
+  average: number;
+}
+
+const parseArgs = (args: string[]): number[] => {
+  if (args.length < 4) throw new Error('Not enough arguments');
+  for (let i = 2; i < args.length; i++) {
+    if (isNaN(Number(args[i])))
+      throw new Error('Provided values were not numbers!');
+  }
+
+  return args.map((arg) => Number(arg));
 };
 
-const calculateExercises = (exercises: Array<number>, target: number): Result => {
-  let average, sum: number = 0;
+const calculateExercises = (exercises: number[], target: number): Result => {
+  let average,
+    sum: number = 0;
   let rating: number;
   let ratingDescription: string;
-  let trainingDays = exercises.filter(e => e > 0).length;
+  let trainingDays = exercises.filter((e) => e > 0).length;
 
-  exercises.forEach(e => sum += e);
+  for (let i = 2; i < exercises.length; i++) {
+    sum += exercises[i];
+  }
   average = sum / exercises.length;
-  
-  if(average > target) {
+
+  if (average > target) {
     rating = 3;
     ratingDescription = 'Great!!';
-  } else if(average > target / 1.5) {
+  } else if (average > target / 1.5) {
     rating = 2;
     ratingDescription = 'Not too shabby!';
   } else {
@@ -29,18 +42,21 @@ const calculateExercises = (exercises: Array<number>, target: number): Result =>
   }
 
   const result = {
-    periodLength: exercises.length,
+    periodLength: exercises.length - 3,
     trainingDays,
     success: target <= average ? true : false,
     rating,
     ratingDescription,
     target,
-    average
-  }
-  
-  return result;
-  
-}
+    average,
+  };
 
-const testExercises: Array<number> = [3, 0, 2, 4.5, 0, 3, 1];
-console.log(calculateExercises(testExercises, 2));
+  return result;
+};
+
+try {
+  const exercises = parseArgs(process.argv);
+  console.log(calculateExercises(exercises, exercises[2]));
+} catch (e) {
+  console.log('Error:', e.message);
+}
