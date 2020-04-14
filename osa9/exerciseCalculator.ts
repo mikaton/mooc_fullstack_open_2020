@@ -18,7 +18,10 @@ const parseArgs = (args: string[]): number[] => {
   return args.map((arg) => Number(arg));
 };
 
-const calculateExercises = (exercises: number[], target: number): Result => {
+export const calculateExercises = (
+  exercises: number[],
+  target: number
+): Result => {
   let sum = 0;
   let rating: number;
   let ratingDescription: string;
