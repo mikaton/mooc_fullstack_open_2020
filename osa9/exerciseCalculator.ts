@@ -19,16 +19,15 @@ const parseArgs = (args: string[]): number[] => {
 };
 
 const calculateExercises = (exercises: number[], target: number): Result => {
-  let average,
-    sum: number = 0;
+  let sum = 0;
   let rating: number;
   let ratingDescription: string;
-  let trainingDays = exercises.filter((e) => e > 0).length;
+  const trainingDays = exercises.filter((e) => e > 0).length;
 
   for (let i = 2; i < exercises.length; i++) {
     sum += exercises[i];
   }
-  average = sum / exercises.length;
+  const average = sum / exercises.length;
 
   if (average > target) {
     rating = 3;
