@@ -1,6 +1,18 @@
-import patients from '../data/patients.json';
-import { PatientNoSSN, Patient } from '../types/patient';
+import patientData from '../data/patients.json';
+import {
+  PatientNoSSN,
+  Patient,
+  Gender,
+  NewPatientEntry,
+} from '../types/patient';
 import { uuid } from 'uuidv4';
+import toNewPatientEntry from '../utils';
+
+const patients: Patient[] = patientData.map((obj) => {
+  const object = toNewPatientEntry(obj) as Patient;
+  object.id = obj.id;
+  return object;
+});
 
 const getPatientsNoSSN = (): PatientNoSSN[] => {
   return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
@@ -12,20 +24,14 @@ const getPatientsNoSSN = (): PatientNoSSN[] => {
   }));
 };
 
-const addPatient = (
-  name: string,
-  dateOfBirth: string,
-  ssn: string,
-  gender: string,
-  occupation: string
-): Patient => {
+const addPatient = (obj: NewPatientEntry): Patient => {
   const newPatient = {
     id: uuid(),
-    name,
-    dateOfBirth,
-    ssn,
-    gender,
-    occupation,
+    name: obj.name,
+    dateOfBirth: obj.dateOfBirth,
+    ssn: obj.ssn,
+    gender: obj.gender,
+    occupation: obj.occupation,
   };
 
   patients.push(newPatient);
