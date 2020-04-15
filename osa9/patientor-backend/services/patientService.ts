@@ -1,10 +1,5 @@
 import patientData from '../data/patients.json';
-import {
-  PatientNoSSN,
-  Patient,
-  Gender,
-  NewPatientEntry,
-} from '../types/patient';
+import { PatientNoSSN, Patient, NewPatientEntry } from '../types/patient';
 import { uuid } from 'uuidv4';
 import toNewPatientEntry from '../utils';
 
