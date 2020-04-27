@@ -1,5 +1,5 @@
-import patientData from '../data/patients.json';
-import { PublicPatient, Patient, NewPatientEntry } from '../types/patient';
+import patientData from '../data/patients';
+import { PublicPatient, Patient, NewPatientEntry } from '../types';
 import { uuid } from 'uuidv4';
 import toNewPatientEntry from '../utils';
 
@@ -31,7 +31,7 @@ const addPatient = (obj: NewPatientEntry): Patient => {
     ssn: obj.ssn,
     gender: obj.gender,
     occupation: obj.occupation,
-    entries: [],
+    entries: obj.entries,
   };
 
   patients.push(newPatient);

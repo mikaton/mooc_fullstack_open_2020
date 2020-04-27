@@ -24,7 +24,6 @@ app.get('/api/patients', (_req, res) => {
 });
 
 app.get('/api/patients/:id', (req, res) => {
-  console.log('/patients/:id was pinged');
   res.send(patientService.getPatient(req.params.id));
 });
 

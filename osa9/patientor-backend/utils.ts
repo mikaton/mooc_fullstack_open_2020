@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { NewPatientEntry, Gender } from './types/patient';
+import { NewPatientEntry, Gender } from './types';
 
 const isString = (str: any): str is string => {
   return typeof str === 'string' || str instanceof String;
@@ -61,7 +61,7 @@ const toNewPatientEntry = (obj: any): NewPatientEntry => {
     ssn: parseSSN(obj.ssn),
     gender: parseGender(obj.gender),
     occupation: parseOccupation(obj.occupation),
-    entries: [],
+    entries: obj.entries,
   };
   return newPatient;
 };
