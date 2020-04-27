@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { apiBaseUrl } from '../constants';
-import { useStateValue } from '../state';
+import { useStateValue, updateCurrentPatient } from '../state';
 import { useParams } from 'react-router-dom';
 import { Patient } from '../types';
 import { Container, Header, Icon, Segment } from 'semantic-ui-react';
@@ -13,10 +13,10 @@ const PatientPage: React.FC = () => {
   React.useEffect(() => {
     const fetchPatient = async (id: string) => {
       try {
-        const patient = await axios.get<Patient>(
+        const { data: patient } = await axios.get<Patient>(
           `${apiBaseUrl}/patients/${id}`
         );
-        dispatch({ type: 'UPDATE_CURRENT_PATIENT', payload: patient.data });
+        dispatch(updateCurrentPatient(patient));
       } catch (e) {
         console.log(e.message);
       }
@@ -36,12 +36,8 @@ const PatientPage: React.FC = () => {
           <Icon fitted name="venus" />
         )}
       </Header>
-      <Segment>
-        <Segment.Inline>ssn: {currentPatient?.ssn}</Segment.Inline>
-        <Segment.Inline>
-          occupation: {currentPatient?.occupation}
-        </Segment.Inline>
-      </Segment>
+      <Segment.Inline>ssn: {currentPatient?.ssn}</Segment.Inline>
+      <Segment.Inline>occupation: {currentPatient?.occupation}</Segment.Inline>
     </Container>
   );
 };
