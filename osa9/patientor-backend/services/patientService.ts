@@ -1,5 +1,5 @@
 import patientData from '../data/patients.json';
-import { PatientNoSSN, Patient, NewPatientEntry } from '../types/patient';
+import { PublicPatient, Patient, NewPatientEntry } from '../types/patient';
 import { uuid } from 'uuidv4';
 import toNewPatientEntry from '../utils';
 
@@ -9,7 +9,11 @@ const patients: Patient[] = patientData.map((obj) => {
   return object;
 });
 
-const getPatientsNoSSN = (): PatientNoSSN[] => {
+const getPatient = (id: string): Patient | undefined => {
+  return patients.find((patient) => patient.id === id);
+};
+
+const getPublicPatients = (): PublicPatient[] => {
   return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
     id,
     name,
@@ -27,6 +31,7 @@ const addPatient = (obj: NewPatientEntry): Patient => {
     ssn: obj.ssn,
     gender: obj.gender,
     occupation: obj.occupation,
+    entries: [],
   };
 
   patients.push(newPatient);
@@ -35,6 +40,7 @@ const addPatient = (obj: NewPatientEntry): Patient => {
 };
 
 export default {
-  getPatientsNoSSN,
+  getPatient,
+  getPublicPatients,
   addPatient,
 };

@@ -20,7 +20,11 @@ app.get('/api/diagnoses', (_req, res) => {
 });
 
 app.get('/api/patients', (_req, res) => {
-  res.send(patientService.getPatientsNoSSN());
+  res.send(patientService.getPublicPatients());
+});
+
+app.get('/api/patients/:id', (req, res) => {
+  res.send(patientService.getPatient(req.params.id));
 });
 
 app.post('/api/patients', (req, res) => {

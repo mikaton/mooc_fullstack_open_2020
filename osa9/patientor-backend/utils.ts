@@ -1,15 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { NewPatientEntry, Gender } from './types/patient';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-const toNewPatientEntry = (obj: any): NewPatientEntry => {
-  const newPatient: NewPatientEntry = {
-    name: parseName(obj.name),
-    dateOfBirth: parseDateOfBirth(obj.dateOfBirth),
-    ssn: parseSSN(obj.ssn),
-    gender: parseGender(obj.gender),
-    occupation: parseOccupation(obj.occupation),
-  };
-  return newPatient;
+const isString = (str: any): str is string => {
+  return typeof str === 'string' || str instanceof String;
+};
+
+const isDate = (date: any): boolean => {
+  return Boolean(Date.parse(date));
+};
+
+const isGender = (gender: any): gender is Gender => {
+  return Object.values(Gender).includes(gender);
 };
 
 const parseName = (name: any): string => {
@@ -52,16 +54,16 @@ const parseGender = (gender: any): Gender => {
   return gender;
 };
 
-const isString = (str: any): str is string => {
-  return typeof str === 'string' || str instanceof String;
-};
-
-const isDate = (date: any): boolean => {
-  return Boolean(Date.parse(date));
-};
-
-const isGender = (gender: any): gender is Gender => {
-  return Object.values(Gender).includes(gender);
+const toNewPatientEntry = (obj: any): NewPatientEntry => {
+  const newPatient: NewPatientEntry = {
+    name: parseName(obj.name),
+    dateOfBirth: parseDateOfBirth(obj.dateOfBirth),
+    ssn: parseSSN(obj.ssn),
+    gender: parseGender(obj.gender),
+    occupation: parseOccupation(obj.occupation),
+    entries: [],
+  };
+  return newPatient;
 };
 
 export default toNewPatientEntry;
