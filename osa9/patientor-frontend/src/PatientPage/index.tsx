@@ -3,14 +3,16 @@ import axios from 'axios';
 import { apiBaseUrl } from '../constants';
 import { useStateValue, updateCurrentPatient } from '../state';
 import { useParams } from 'react-router-dom';
-import { Patient } from '../types';
+import { Patient, Diagnosis } from '../types';
 import { Container, Header, Icon, Segment } from 'semantic-ui-react';
 
 const PatientPage: React.FC = () => {
   const [{ currentPatient }, dispatch] = useStateValue();
+  const [{ diagnoses }] = useStateValue();
   const id = useParams<{ id: string }>().id;
 
   React.useEffect(() => {
+    console.log(diagnoses);
     const fetchPatient = async (id: string) => {
       try {
         const { data: patient } = await axios.get<Patient>(
@@ -21,8 +23,9 @@ const PatientPage: React.FC = () => {
         console.log(e.message);
       }
     };
+
     fetchPatient(id);
-  }, [dispatch, id]);
+  }, [dispatch, id, diagnoses]);
 
   return (
     <Container>
@@ -45,9 +48,15 @@ const PatientPage: React.FC = () => {
           &nbsp;
           <i key={entry.id}>{entry.description}</i>
           <ul>
-            {entry.diagnosisCodes?.map((code) => (
-              <li key={code}>{code}</li>
-            ))}
+            {entry.diagnosisCodes?.map((code) =>
+              Object.values(diagnoses).map((diagnosis: Diagnosis) =>
+                diagnosis.code === code ? (
+                  <li key={diagnosis.code}>
+                    {diagnosis.code} {diagnosis.name}
+                  </li>
+                ) : undefined
+              )
+            )}
           </ul>
         </div>
       ))}
