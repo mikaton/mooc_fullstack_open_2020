@@ -3,8 +3,12 @@ import axios from 'axios';
 import { apiBaseUrl } from '../constants';
 import { useStateValue, updateCurrentPatient } from '../state';
 import { useParams } from 'react-router-dom';
-import { Patient, Diagnosis } from '../types';
+import { Patient } from '../types';
 import { Container, Header, Icon, Segment } from 'semantic-ui-react';
+import HealthCheckEntry from '../components/HealthCheckEntry';
+import OccupationalHealthcareEntry from '../components/OccupationalHealthcareEntry';
+import { assertNever } from '../utils';
+import HospitalEntry from '../components/HospitalEntry';
 
 const PatientPage: React.FC = () => {
   const [{ currentPatient }, dispatch] = useStateValue();
@@ -12,7 +16,6 @@ const PatientPage: React.FC = () => {
   const id = useParams<{ id: string }>().id;
 
   React.useEffect(() => {
-    console.log(diagnoses);
     const fetchPatient = async (id: string) => {
       try {
         const { data: patient } = await axios.get<Patient>(
@@ -42,8 +45,39 @@ const PatientPage: React.FC = () => {
       <Segment.Inline>ssn: {currentPatient?.ssn}</Segment.Inline>
       <Segment.Inline>occupation: {currentPatient?.occupation}</Segment.Inline>
       <Header as="h3">entries</Header>
-      {currentPatient?.entries?.map((entry) => (
-        <div key={entry.id}>
+      {currentPatient?.entries?.map(
+        (entry) => {
+          switch (entry.type) {
+            case 'HealthCheck':
+              return (
+                <HealthCheckEntry
+                  key={entry.id}
+                  entry={entry}
+                  healthCheckRating={entry.healthCheckRating}
+                />
+              );
+            case 'OccupationalHealthcare':
+              return (
+                <OccupationalHealthcareEntry
+                  key={entry.id}
+                  entry={entry}
+                  employerName={entry.employerName}
+                  sickLeave={entry.sickLeave}
+                />
+              );
+            case 'Hospital':
+              return (
+                <HospitalEntry
+                  key={entry.id}
+                  entry={entry}
+                  discharge={entry.discharge}
+                />
+              );
+            default:
+              assertNever(entry);
+          }
+        }
+        /*<div key={entry.id}>
           {entry.date}
           &nbsp;
           <i key={entry.id}>{entry.description}</i>
@@ -58,8 +92,8 @@ const PatientPage: React.FC = () => {
               )
             )}
           </ul>
-        </div>
-      ))}
+        </div> */
+      )}
     </Container>
   );
 };
