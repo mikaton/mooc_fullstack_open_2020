@@ -29,8 +29,12 @@ app.get('/api/patients/:id', (req, res) => {
 
 app.post('/api/patients/:id/entries', (req, res) => {
   try {
+    const patient = patientService.getPatient(req.params.id);
+    if (!patient) return res.status(400).send('Patient not found').end();
+
     const newEntry = patientService.addEntry(req.body);
-    console.log(newEntry);
+    patient.entries = patient.entries.concat(newEntry);
+
     res.json(newEntry);
   } catch (e) {
     res.status(400).send(e.message);
