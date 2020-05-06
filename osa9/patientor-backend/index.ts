@@ -27,6 +27,16 @@ app.get('/api/patients/:id', (req, res) => {
   res.send(patientService.getPatient(req.params.id));
 });
 
+app.post('/api/patients/:id/entries', (req, res) => {
+  try {
+    const newEntry = patientService.addEntry(req.body);
+    console.log(newEntry);
+    res.json(newEntry);
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
+
 app.post('/api/patients', (req, res) => {
   try {
     const newPatient = toNewPatientEntry(req.body);

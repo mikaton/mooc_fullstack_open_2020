@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { NewPatientEntry, Gender } from './types';
+import { NewPatient, Gender } from './types';
 
 const isString = (str: any): str is string => {
   return typeof str === 'string' || str instanceof String;
@@ -54,16 +54,21 @@ const parseGender = (gender: any): Gender => {
   return gender;
 };
 
-const toNewPatientEntry = (obj: any): NewPatientEntry => {
-  const newPatient: NewPatientEntry = {
+const toNewPatientEntry = (obj: any): NewPatient => {
+  const newPatient: NewPatient = {
     name: parseName(obj.name),
     dateOfBirth: parseDateOfBirth(obj.dateOfBirth),
     ssn: parseSSN(obj.ssn),
     gender: parseGender(obj.gender),
     occupation: parseOccupation(obj.occupation),
-    entries: obj.entries,
   };
   return newPatient;
+};
+
+export const assertNever = (value: never): never => {
+  throw new Error(
+    `Unhandled discriminated union member: ${JSON.stringify(value)}`
+  );
 };
 
 export default toNewPatientEntry;
