@@ -29,6 +29,10 @@ app.get('/api/patients/:id', (req, res) => {
 
 app.post('/api/patients/:id/entries', (req, res) => {
   try {
+    console.log(
+      '/api/patients/:id/entries was pinged, request.body: ',
+      req.body
+    );
     const patient = patientService.getPatient(req.params.id);
     if (!patient) return res.status(400).send('Patient not found').end();
 
